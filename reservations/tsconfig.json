@@ -30,8 +30,8 @@
     "**/*.jsx",
     "**/*.ts",
     "**/*.tsx",
-    "../dist/reservation/.next/types/**/*.ts",
-    "../reservation/.next/types/**/*.ts",
+    "../dist/reservations/.next/types/**/*.ts",
+    ".next/types/**/*.ts",
     "next-env.d.ts",
     ".next/types/**/*.ts"
   ],
