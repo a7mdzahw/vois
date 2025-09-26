@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import classnames from 'classnames';
 import {
   Navbar as NextUINavbar,
   NavbarBrand,
@@ -10,18 +11,22 @@ import {
   NavbarMenuToggle,
   NavbarMenu,
   NavbarMenuItem,
-  Avatar,
-  Dropdown,
-  DropdownTrigger,
-  DropdownMenu,
-  DropdownItem,
 } from '@heroui/react';
 
-import { SignInButton, useUser } from '@clerk/nextjs';
+import { useUser, UserButton } from '@clerk/nextjs';
+import {
+  ArrowRightIcon,
+  CalendarIcon,
+  PlusIcon,
+} from '@heroicons/react/24/outline';
 
 const menuItems = [
-  { name: 'Reservations', href: '/' },
-  { name: 'Reserve', href: '/reserve' },
+  {
+    name: 'Reservations',
+    href: '/',
+    icon: <CalendarIcon className="w-4 h-4" />,
+  },
+  { name: 'Reserve', href: '/reserve', icon: <PlusIcon className="w-4 h-4" /> },
 ];
 
 export default function Navbar() {
@@ -55,12 +60,17 @@ export default function Navbar() {
           <NavbarItem key={item.name} isActive={pathname === item.href}>
             <Link
               href={item.href}
-              className={`px-4 py-2 rounded-lg transition-colors duration-200 ${
-                pathname === item.href
-                  ? 'bg-red-100 text-red-700 font-semibold'
-                  : 'text-gray-600 hover:text-red-600 hover:bg-red-50'
-              }`}
+              className={classnames(
+                'px-4 py-2 rounded-lg transition-colors duration-200 flex items-center gap-2',
+                {
+                  'bg-red-100 text-red-700 font-semibold':
+                    pathname === item.href,
+                  'text-gray-600 hover:text-red-600 hover:bg-red-50':
+                    pathname !== item.href,
+                }
+              )}
             >
+              {item.icon}
               {item.name}
             </Link>
           </NavbarItem>
@@ -68,50 +78,49 @@ export default function Navbar() {
       </NavbarContent>
 
       <NavbarContent justify="end">
-        <SignInButton  />
-        <NavbarItem>
-          <Dropdown placement="bottom-end">
-            <DropdownTrigger>
-              <Avatar
-                isBordered
-                as="button"
-                className="transition-transform"
-                color="primary"
-                name="User"
-                size="sm"
-                src={user?.imageUrl}
-              />
-            </DropdownTrigger>
-            <DropdownMenu aria-label="Profile Actions" variant="flat">
-              <DropdownItem key="profile" className="h-14 gap-2">
-                <p className="font-semibold">Signed in as</p>
-                <p className="font-semibold">{user?.emailAddresses[0].emailAddress}</p>
-              </DropdownItem>
-              <DropdownItem key="settings">My Settings</DropdownItem>
-              <DropdownItem key="team_settings">Team Settings</DropdownItem>
-              <DropdownItem key="analytics">Analytics</DropdownItem>
-              <DropdownItem key="system">System</DropdownItem>
-              <DropdownItem key="configurations">Configurations</DropdownItem>
-              <DropdownItem key="help_and_feedback">Help & Feedback</DropdownItem>
-              <DropdownItem key="logout" color="danger">
-                Log Out
-              </DropdownItem>
-            </DropdownMenu>
-          </Dropdown>
-        </NavbarItem>
+        {user ? (
+          <NavbarItem>
+            <UserButton
+              afterSignOutUrl="/"
+              appearance={{
+                elements: {
+                  avatarBox: 'w-8 h-8',
+                  userButtonPopoverCard: 'shadow-lg border border-gray-200',
+                  userButtonPopoverActionButton: 'hover:bg-gray-50',
+                  userButtonPopoverActionButtonText: 'text-gray-700',
+                  userButtonPopoverFooter: 'hidden',
+                },
+              }}
+            />
+          </NavbarItem>
+        ) : (
+          <NavbarItem>
+            <div className="flex items-center space-x-4">
+              <Link
+                href="/login"
+                className="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition-colors font-medium text-medium flex items-center gap-2"
+              >
+                Login <ArrowRightIcon className="w-4 h-4" />
+              </Link>
+            </div>
+          </NavbarItem>
+        )}
       </NavbarContent>
 
       <NavbarMenu>
         {menuItems.map((item, index) => (
           <NavbarMenuItem key={`${item.name}-${index}`}>
             <Link
-              className={`w-full ${
-                pathname === item.href
-                  ? 'text-red-600 font-semibold'
-                  : 'text-gray-600'
-              }`}
+              className={classnames(
+                'w-full px-4 py-2 rounded-lg transition-colors duration-200 flex items-center gap-2',
+                {
+                  'text-red-600 font-semibold': pathname === item.href,
+                  'text-gray-600': pathname !== item.href,
+                }
+              )}
               href={item.href}
             >
+              {item.icon}
               {item.name}
             </Link>
           </NavbarMenuItem>

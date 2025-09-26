@@ -16,7 +16,9 @@ import {
   Spinner,
 } from '@heroui/react';
 import { useReservations } from './hooks/useReservations';
-import CreateReservationForm from './components/CreateReservationForm';
+import Image from 'next/image';
+import Link from 'next/link';
+import { PlusIcon } from '@heroicons/react/24/outline';
 
 const statusColorMap = {
   confirmed: 'success',
@@ -90,11 +92,14 @@ export default function ReservationsPage() {
               Filter
             </Button>
           </div>
-          <CreateReservationForm />
+
+          <Button as={Link} href="/reserve" color="primary" className="bg-red-600 hover:bg-red-700 rounded-sm" startContent={<PlusIcon className="w-4 h-4" />}>
+            Reserve a Room
+          </Button>
         </div>
 
         <Card className="shadow-lg">
-          <CardHeader className="bg-gradient-to-r from-red-600 to-red-700 text-white">
+          <CardHeader className="bg-gradient-to-r from-red-600 to-red-700 text-white rounded-sm">
             <h2 className="text-2xl font-semibold">All Reservations</h2>
           </CardHeader>
           <CardBody className="p-0">
@@ -111,12 +116,19 @@ export default function ReservationsPage() {
               <TableBody>
                 {reservations && reservations.length > 0 ? (
                   reservations.map((reservation) => (
-                    <TableRow key={reservation.id}>
+                    <TableRow key={reservation.id} className='h-20 border-b border-gray-200 hover:bg-gray-50 cursor-pointer'>
                       <TableCell className="font-mono text-sm">
                         {reservation.id.slice(0, 8)}...
                       </TableCell>
                       <TableCell className="font-semibold">
+                         <div className="flex items-center gap-2">  <Image
+                          src={reservation.roomIcon || ''}
+                          alt={reservation.roomName || 'Unknown Room'}
+                          width={20}
+                          height={20}
+                        />
                         {reservation.roomName || 'Unknown Room'}
+                        </div>
                       </TableCell>
                       <TableCell>{reservation.date}</TableCell>
                       <TableCell>{reservation.userName || 'Unknown User'}</TableCell>

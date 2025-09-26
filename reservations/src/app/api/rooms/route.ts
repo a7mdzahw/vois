@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { db } from '@vois/db/drizzle';
-import { rooms } from '@vois/db/schemas/reservation';
+import { rooms } from '@vois/db/schemas/room';
 
 // GET /api/rooms - Get all rooms
 export async function GET() {

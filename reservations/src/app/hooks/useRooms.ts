@@ -3,6 +3,8 @@ import { useQuery } from '@tanstack/react-query';
 export interface Room {
   id: string;
   name: string;
+  icon?: string;
+  capacity?: number;
 }
 
 // Hook to fetch all rooms

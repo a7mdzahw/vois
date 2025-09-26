@@ -36,6 +36,13 @@
       "when": 1758845526966,
       "tag": "0004_conscious_caretaker",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1758873663422,
+      "tag": "0005_overconfident_wendell_rand",
+      "breakpoints": true
     }
   ]
 }

@@ -8,6 +8,7 @@ export interface Reservation {
   roomId: string | null;
   userId: string | null;
   roomName: string | null;
+  roomIcon: string | null;
   userName: string | null;
   userEmail: string | null;
 }
@@ -58,4 +59,15 @@ export function useCreateReservation() {
       queryClient.invalidateQueries({ queryKey: ['reservations'] });
     },
   });
+}
+
+// Export both hooks for convenience
+export function useReservationsWithCreate() {
+  const reservations = useReservations();
+  const createReservation = useCreateReservation();
+
+  return {
+    ...reservations,
+    createReservation,
+  };
 }

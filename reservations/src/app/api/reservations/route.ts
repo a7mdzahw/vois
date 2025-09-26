@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { db } from '@vois/db/drizzle';
-import { reservations, rooms } from '@vois/db/schemas/reservation';
+import { reservations } from '@vois/db/schemas/reservation';
+import { rooms } from '@vois/db/schemas/room';
 import { users } from '@vois/db/schemas/user';
 import { eq } from 'drizzle-orm';
 import { auth } from '@clerk/nextjs/server';
@@ -17,6 +18,7 @@ export async function GET() {
         roomId: reservations.roomId,
         userId: reservations.user,
         roomName: rooms.name,
+        roomIcon: rooms.icon,
         userName: users.name,
         userEmail: users.email,
       })

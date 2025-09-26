@@ -11,6 +11,9 @@ importers:
       '@clerk/nextjs':
         specifier: ^6.32.2
         version: 6.32.2(next@15.2.5(@babel/core@7.28.4)(@playwright/test@1.55.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(sass@1.93.0))(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      '@heroicons/react':
+        specifier: ^2.2.0
+        version: 2.2.0(react@19.0.0)
       '@heroui/react':
         specifier: ^2.8.4
         version: 2.8.4(@types/react@19.0.0)(framer-motion@12.23.16(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(tailwindcss@3.4.3)
@@ -32,6 +35,9 @@ importers:
       '@tanstack/zod-form-adapter':
         specifier: ^0.42.1
         version: 0.42.1(zod@3.25.76)
+      classnames:
+        specifier: ^2.5.1
+        version: 2.5.1
       dotenv:
         specifier: ^17.2.2
         version: 17.2.2
@@ -1338,6 +1344,11 @@ packages:
 
   '@formatjs/intl-localematcher@0.6.1':
     resolution: {integrity: sha512-ePEgLgVCqi2BBFnTMWPfIghu6FkbZnnBVhO2sSxvLfrdFw7wCHAHiDoM2h4NRgjbaY7+B7HgOLZGkK187pZTZg==}
+
+  '@heroicons/react@2.2.0':
+    resolution: {integrity: sha512-LMcepvRaS9LYHJGsF0zzmgKCUim/X3N/DQKc4jepAXJ7l8QxJ1PmxJzqplF2Z3FE4PqBAIGyJAQ/w4B5dsqbtQ==}
+    peerDependencies:
+      react: '>= 16 || ^19.0.0-rc'
 
   '@heroui/accordion@2.2.23':
     resolution: {integrity: sha512-eXokso461YdSkJ6t3fFxBq2xkxCcZPbXECwanNHaLZPBh1QMaVdtCEZZxVB4HeoMRmZchRHWbUrbiz/l+A9hZQ==}
@@ -4659,6 +4670,9 @@ packages:
   ci-info@3.9.0:
     resolution: {integrity: sha512-NIxF55hv4nSqQswkAeiOi1r83xy8JldOFDTWiug55KBu9Jnblncd2U6ViHmYgHf01TPZS77NJBhBMKdWj9HQMQ==}
     engines: {node: '>=8'}
+
+  classnames@2.5.1:
+    resolution: {integrity: sha512-saHYOzhIQs6wy2sVxTM6bUDsQO4F50V9RQ22qBpEdCW+I+/Wmke2HOl6lS6dTpdxVhb88/I6+Hs+438c3lfUow==}
 
   cli-cursor@3.1.0:
     resolution: {integrity: sha512-I/zHAwsKf9FqGoXM4WWRACob9+SNukZTd94DWF57E4toouRulbCxcUh6RKUEOQlYTHJnzkPMySvPNaaSLNfLZw==}
@@ -10336,6 +10350,10 @@ snapshots:
     dependencies:
       tslib: 2.8.1
 
+  '@heroicons/react@2.2.0(react@19.0.0)':
+    dependencies:
+      react: 19.0.0
+
   '@heroui/accordion@2.2.23(@heroui/system@2.4.22(@heroui/theme@2.4.22(tailwindcss@3.4.3))(framer-motion@12.23.16(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(@heroui/theme@2.4.22(tailwindcss@3.4.3))(framer-motion@12.23.16(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react-dom@19.0.0(react@19.0.0))(react@19.0.0)':
     dependencies:
       '@heroui/aria-utils': 2.2.23(@heroui/theme@2.4.22(tailwindcss@3.4.3))(framer-motion@12.23.16(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
@@ -15025,6 +15043,8 @@ snapshots:
   chrome-trace-event@1.0.4: {}
 
   ci-info@3.9.0: {}
+
+  classnames@2.5.1: {}
 
   cli-cursor@3.1.0:
     dependencies:

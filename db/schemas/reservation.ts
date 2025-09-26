@@ -1,5 +1,7 @@
 import { date, pgEnum, pgTable, text, uuid } from 'drizzle-orm/pg-core';
+
 import { users } from './user';
+import { rooms } from './room';
 
 export const statuses = pgEnum('statuses', {
   confirmed: 'confirmed',
@@ -14,9 +16,4 @@ export const reservations = pgTable('reservations', {
   date: date('date').notNull(),
   status: statuses('status').notNull(),
   purpose: text('purpose').notNull(),
-});
-
-export const rooms = pgTable('rooms', {
-  id: uuid('id').primaryKey().defaultRandom(),
-  name: text('name').notNull(),
 });
