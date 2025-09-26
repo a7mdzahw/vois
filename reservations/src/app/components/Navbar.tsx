@@ -17,6 +17,8 @@ import {
   DropdownItem,
 } from '@heroui/react';
 
+import { SignInButton, useUser } from '@clerk/nextjs';
+
 const menuItems = [
   { name: 'Reservations', href: '/' },
   { name: 'Reserve', href: '/reserve' },
@@ -24,6 +26,7 @@ const menuItems = [
 
 export default function Navbar() {
   const pathname = usePathname();
+  const { user } = useUser();
 
   return (
     <NextUINavbar
@@ -65,6 +68,7 @@ export default function Navbar() {
       </NavbarContent>
 
       <NavbarContent justify="end">
+        <SignInButton  />
         <NavbarItem>
           <Dropdown placement="bottom-end">
             <DropdownTrigger>
@@ -75,13 +79,13 @@ export default function Navbar() {
                 color="primary"
                 name="User"
                 size="sm"
-                src="https://i.pravatar.cc/150?u=user"
+                src={user?.imageUrl}
               />
             </DropdownTrigger>
             <DropdownMenu aria-label="Profile Actions" variant="flat">
               <DropdownItem key="profile" className="h-14 gap-2">
                 <p className="font-semibold">Signed in as</p>
-                <p className="font-semibold">user@vodafone.com</p>
+                <p className="font-semibold">{user?.emailAddresses[0].emailAddress}</p>
               </DropdownItem>
               <DropdownItem key="settings">My Settings</DropdownItem>
               <DropdownItem key="team_settings">Team Settings</DropdownItem>

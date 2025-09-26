@@ -1,0 +1,41 @@
+{
+  "version": "7",
+  "dialect": "postgresql",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "7",
+      "when": 1758842522583,
+      "tag": "0000_true_ezekiel_stane",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1758844203014,
+      "tag": "0001_skinny_hawkeye",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1758844336817,
+      "tag": "0002_odd_red_shift",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1758844988440,
+      "tag": "0003_unusual_supernaut",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1758845526966,
+      "tag": "0004_conscious_caretaker",
+      "breakpoints": true
+    }
+  ]
+}

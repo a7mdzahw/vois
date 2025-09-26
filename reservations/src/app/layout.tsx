@@ -1,6 +1,7 @@
 import './global.css';
 import { HeroUIProvider } from '@heroui/react';
 import Navbar from './components/Navbar';
+import Providers from './components/Providers';
 
 export const metadata = {
   title: 'VOIS Office Reservations',
@@ -15,14 +16,16 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <HeroUIProvider>
-          <div className="min-h-screen bg-gray-50">
-            <Navbar />
-            <main>
-              {children}
-            </main>
-          </div>
-        </HeroUIProvider>
+        <Providers>
+          <HeroUIProvider>
+            <div className="min-h-screen bg-gray-50">
+              <Navbar />
+              <main>
+                {children}
+              </main>
+            </div>
+          </HeroUIProvider>
+        </Providers>
       </body>
     </html>
   );

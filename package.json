@@ -3,15 +3,19 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
-    "build:reservations": "nx run-many --target=build --projects=reservations"
+    "build:reservations": "nx run reservations:build",
+    "db:generate": "nx run db:generate",
+    "db:migrate": "nx run db:migrate"
   },
   "private": true,
   "dependencies": {
+    "@clerk/nextjs": "^6.32.2",
     "@heroui/react": "^2.8.4",
     "@heroui/system": "^2.4.22",
     "@heroui/theme": "^2.4.22",
     "@neondatabase/serverless": "^1.0.1",
     "@tanstack/react-form": "^1.23.0",
+    "@tanstack/react-query": "^5.90.2",
     "@tanstack/zod-form-adapter": "^0.42.1",
     "dotenv": "^17.2.2",
     "drizzle-orm": "^0.44.5",

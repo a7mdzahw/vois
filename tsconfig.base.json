@@ -15,7 +15,7 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@vois/db": ["db/index.ts"]
+      "@vois/db/*": ["db/*"]
     }
   },
   "exclude": ["node_modules", "tmp"]

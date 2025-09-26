@@ -1,7 +1,7 @@
 {
   "extends": "../tsconfig.base.json",
   "compilerOptions": {
-    "module": "commonjs",
+    "module": "CommonJS",
     "forceConsistentCasingInFileNames": true,
     "strict": true,
     "importHelpers": true,
@@ -12,9 +12,4 @@
   },
   "files": [],
   "include": [],
-  "references": [
-    {
-      "path": "./tsconfig.lib.json"
-    }
-  ]
 }
