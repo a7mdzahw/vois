@@ -22,7 +22,7 @@ export default function SignUpPage() {
         {/* VOIS Logo */}
         <div className="flex justify-center mb-8">
           <div className="flex items-center space-x-3">
-            <div className="w-12 h-12 bg-red-600 rounded-xl flex items-center justify-center">
+            <div className="w-12 h-12 bg-red-600 rounded-sm flex items-center justify-center">
               <span className="text-white font-bold text-2xl">V</span>
             </div>
             <div className="flex flex-col">

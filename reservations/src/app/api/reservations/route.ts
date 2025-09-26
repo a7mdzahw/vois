@@ -68,7 +68,7 @@ export async function POST(request: NextRequest) {
       .values({
         roomId,
         user: user[0].id,
-        date,
+        date: new Date(date),
         status,
         purpose,
       })

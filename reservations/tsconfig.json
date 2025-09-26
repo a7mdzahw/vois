@@ -1,6 +1,13 @@
 {
   "extends": "../tsconfig.base.json",
   "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@utils/*": ["./src/utils/*"],
+      "@hooks/*": ["./src/hooks/*"],
+      "@components/*": ["./src/components/*"],
+      "@vois/db/*": ["../db/*"]
+    },
     "jsx": "preserve",
     "strict": true,
     "noEmit": true,

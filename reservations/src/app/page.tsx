@@ -15,10 +15,14 @@ import {
   Input,
   Spinner,
 } from '@heroui/react';
-import { useReservations } from './hooks/useReservations';
+import { useReservations } from '../hooks/useReservations';
 import Image from 'next/image';
 import Link from 'next/link';
-import { PlusIcon } from '@heroicons/react/24/outline';
+import { PlusIcon, MagnifyingGlassIcon } from '@heroicons/react/24/outline';
+import { formatDateTime } from '@utils/date';
+import { useRouter } from 'next/navigation';
+import CancelReservation from '@components/CancelReservation';
+import { useState } from 'react';
 
 const statusColorMap = {
   confirmed: 'success',
@@ -27,7 +31,18 @@ const statusColorMap = {
 } as const;
 
 export default function ReservationsPage() {
-  const { data: reservations, isLoading, error } = useReservations();
+  const [search, setSearch] = useState('');
+  const { data, isLoading, error } = useReservations();
+
+  const reservations = data?.filter((reservation) => {
+    return (
+      reservation.roomName?.toLowerCase().includes(search.toLowerCase()) ||
+      reservation.userName?.toLowerCase().includes(search.toLowerCase()) ||
+      reservation.purpose?.toLowerCase().includes(search.toLowerCase())
+    );
+  });
+
+  const router = useRouter();
 
   if (isLoading) {
     return (
@@ -70,44 +85,35 @@ export default function ReservationsPage() {
         <div className="mb-6 flex flex-col sm:flex-row gap-4 justify-between">
           <div className="flex flex-col sm:flex-row gap-4">
             <Input
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
               placeholder="Search reservations..."
-              className="max-w-xs"
-              startContent={
-                <svg
-                  className="w-4 h-4 text-gray-400"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-                  />
-                </svg>
-              }
+              className="w-72 hover:outline-none focus:outline-none"
+              startContent={<MagnifyingGlassIcon className="w-4 h-4" />}
             />
-            <Button color="primary" className="bg-red-600 hover:bg-red-700">
-              Filter
-            </Button>
           </div>
 
-          <Button as={Link} href="/reserve" color="primary" className="bg-red-600 hover:bg-red-700 rounded-sm" startContent={<PlusIcon className="w-4 h-4" />}>
+          <Button
+            as={Link}
+            href="/reserve"
+            color="primary"
+            className="bg-red-600 hover:bg-red-700 rounded-sm"
+            startContent={<PlusIcon className="w-4 h-4" />}
+          >
             Reserve a Room
           </Button>
         </div>
 
-        <Card className="shadow-lg">
+        <Card className="shadow-lg rounded-sm">
           <CardHeader className="bg-gradient-to-r from-red-600 to-red-700 text-white rounded-sm">
             <h2 className="text-2xl font-semibold">All Reservations</h2>
           </CardHeader>
-          <CardBody className="p-0">
+          <CardBody className="p-0 rounded-sm">
             <Table aria-label="Reservations table">
               <TableHeader>
                 <TableColumn>ID</TableColumn>
                 <TableColumn>ROOM</TableColumn>
-                <TableColumn>DATE</TableColumn>
+                <TableColumn>DATE / TIME</TableColumn>
                 <TableColumn>USER</TableColumn>
                 <TableColumn>PURPOSE</TableColumn>
                 <TableColumn>STATUS</TableColumn>
@@ -116,22 +122,32 @@ export default function ReservationsPage() {
               <TableBody>
                 {reservations && reservations.length > 0 ? (
                   reservations.map((reservation) => (
-                    <TableRow key={reservation.id} className='h-20 border-b border-gray-200 hover:bg-gray-50 cursor-pointer'>
+                    <TableRow
+                      key={reservation.id}
+                      className="h-20 border-b border-gray-200 hover:bg-gray-50 cursor-pointer"
+                      onClick={() => {
+                        router.push(`/reservations/${reservation.id}`);
+                      }}
+                    >
                       <TableCell className="font-mono text-sm">
                         {reservation.id.slice(0, 8)}...
                       </TableCell>
                       <TableCell className="font-semibold">
-                         <div className="flex items-center gap-2">  <Image
-                          src={reservation.roomIcon || ''}
-                          alt={reservation.roomName || 'Unknown Room'}
-                          width={20}
-                          height={20}
-                        />
-                        {reservation.roomName || 'Unknown Room'}
+                        <div className="flex items-center gap-2">
+                          {' '}
+                          <Image
+                            src={reservation.roomIcon || ''}
+                            alt={reservation.roomName || 'Unknown Room'}
+                            width={20}
+                            height={20}
+                          />
+                          {reservation.roomName || 'Unknown Room'}
                         </div>
                       </TableCell>
-                      <TableCell>{reservation.date}</TableCell>
-                      <TableCell>{reservation.userName || 'Unknown User'}</TableCell>
+                      <TableCell>{formatDateTime(reservation.date)}</TableCell>
+                      <TableCell>
+                        {reservation.userName || 'Unknown User'}
+                      </TableCell>
                       <TableCell>{reservation.purpose}</TableCell>
                       <TableCell>
                         <Chip
@@ -140,7 +156,7 @@ export default function ReservationsPage() {
                           color={statusColorMap[reservation.status]}
                         >
                           {reservation.status.charAt(0).toUpperCase() +
-                           reservation.status.slice(1)}
+                            reservation.status.slice(1)}
                         </Chip>
                       </TableCell>
                       <TableCell>
@@ -150,16 +166,13 @@ export default function ReservationsPage() {
                             variant="light"
                             color="primary"
                             className="text-red-600 hover:text-red-700"
+                            onPress={() => {
+                              router.push(`/reserve/${reservation.id}`);
+                            }}
                           >
                             Edit
                           </Button>
-                          <Button
-                            size="sm"
-                            variant="light"
-                            color="danger"
-                          >
-                            Cancel
-                          </Button>
+                          <CancelReservation reservation={reservation} />
                         </div>
                       </TableCell>
                     </TableRow>

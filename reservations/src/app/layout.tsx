@@ -1,7 +1,7 @@
 import './global.css';
 import { HeroUIProvider } from '@heroui/react';
-import Navbar from './components/Navbar';
-import Providers from './components/Providers';
+import Navbar from '../components/Navbar';
+import Providers from '../components/Providers';
 
 export const metadata = {
   title: 'VOIS Office Reservations',

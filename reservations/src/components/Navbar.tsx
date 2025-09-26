@@ -44,7 +44,7 @@ export default function Navbar() {
         <NavbarBrand>
           <Link href="/" className="flex items-center space-x-2">
             {/* Vodafone Logo */}
-            <div className="w-8 h-8 bg-red-600 rounded-lg flex items-center justify-center">
+            <div className="w-8 h-8 bg-red-600 rounded-sm flex items-center justify-center">
               <span className="text-white font-bold text-lg">V</span>
             </div>
             <div className="flex flex-col">
@@ -61,7 +61,7 @@ export default function Navbar() {
             <Link
               href={item.href}
               className={classnames(
-                'px-4 py-2 rounded-lg transition-colors duration-200 flex items-center gap-2',
+                'px-4 py-2 rounded-sm transition-colors duration-200 flex items-center gap-2',
                 {
                   'bg-red-100 text-red-700 font-semibold':
                     pathname === item.href,
@@ -98,7 +98,7 @@ export default function Navbar() {
             <div className="flex items-center space-x-4">
               <Link
                 href="/login"
-                className="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition-colors font-medium text-medium flex items-center gap-2"
+                className="bg-red-600 text-white px-4 py-2 rounded-sm hover:bg-red-700 transition-colors font-medium text-medium flex items-center gap-2"
               >
                 Login <ArrowRightIcon className="w-4 h-4" />
               </Link>
@@ -112,7 +112,7 @@ export default function Navbar() {
           <NavbarMenuItem key={`${item.name}-${index}`}>
             <Link
               className={classnames(
-                'w-full px-4 py-2 rounded-lg transition-colors duration-200 flex items-center gap-2',
+                'w-full px-4 py-2 rounded-sm transition-colors duration-200 flex items-center gap-2',
                 {
                   'text-red-600 font-semibold': pathname === item.href,
                   'text-gray-600': pathname !== item.href,

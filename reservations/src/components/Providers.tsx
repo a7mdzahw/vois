@@ -5,6 +5,7 @@ import { ClerkProvider } from '@clerk/nextjs';
 import { useState } from 'react';
 
 import { ToastProvider } from '@heroui/react';
+import { ConfirmProvider } from './ConfirmDialog';
 
 export default function Providers({ children }: { children: React.ReactNode }) {
   const [queryClient] = useState(
@@ -23,7 +24,7 @@ export default function Providers({ children }: { children: React.ReactNode }) {
     <ClerkProvider>
       <QueryClientProvider client={queryClient}>
         <ToastProvider />
-        {children}
+        <ConfirmProvider>{children}</ConfirmProvider>
       </QueryClientProvider>
     </ClerkProvider>
   );
