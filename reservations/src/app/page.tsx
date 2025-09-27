@@ -18,7 +18,7 @@ import {
 import { useReservations } from '../hooks/useReservations';
 import Image from 'next/image';
 import Link from 'next/link';
-import { PlusIcon, MagnifyingGlassIcon } from '@heroicons/react/24/outline';
+import { PlusIcon, MagnifyingGlassIcon, PencilIcon } from '@heroicons/react/24/outline';
 import { formatDateTime } from '@utils/date';
 import { useRouter } from 'next/navigation';
 import CancelReservation from '@components/CancelReservation';
@@ -111,17 +111,15 @@ export default function ReservationsPage() {
           <CardBody className="p-0 rounded-sm">
             <Table aria-label="Reservations table">
               <TableHeader>
-                <TableColumn>ID</TableColumn>
+                <TableColumn>#</TableColumn>
                 <TableColumn>ROOM</TableColumn>
                 <TableColumn>DATE / TIME</TableColumn>
-                <TableColumn>USER</TableColumn>
-                <TableColumn>PURPOSE</TableColumn>
                 <TableColumn>STATUS</TableColumn>
                 <TableColumn>ACTIONS</TableColumn>
               </TableHeader>
               <TableBody>
                 {reservations && reservations.length > 0 ? (
-                  reservations.map((reservation) => (
+                  reservations.map((reservation, index) => (
                     <TableRow
                       key={reservation.id}
                       className="h-20 border-b border-gray-200 hover:bg-gray-50 cursor-pointer"
@@ -129,26 +127,21 @@ export default function ReservationsPage() {
                         router.push(`/reservations/${reservation.id}`);
                       }}
                     >
-                      <TableCell className="font-mono text-sm">
-                        {reservation.id.slice(0, 8)}...
+                      <TableCell className="font-mono text-sm text-center">
+                        {index + 1}
                       </TableCell>
                       <TableCell className="font-semibold">
                         <div className="flex items-center gap-2">
-                          {' '}
-                          <Image
-                            src={reservation.roomIcon || ''}
+                         {reservation.roomIcon && <Image
+                            src={reservation.roomIcon}
                             alt={reservation.roomName || 'Unknown Room'}
                             width={20}
                             height={20}
-                          />
+                          />}
                           {reservation.roomName || 'Unknown Room'}
                         </div>
                       </TableCell>
-                      <TableCell>{formatDateTime(reservation.date)}</TableCell>
-                      <TableCell>
-                        {reservation.userName || 'Unknown User'}
-                      </TableCell>
-                      <TableCell>{reservation.purpose}</TableCell>
+                      <TableCell className="font-semibold">{formatDateTime(reservation.date)}</TableCell>
                       <TableCell>
                         <Chip
                           variant="flat"
@@ -166,12 +159,11 @@ export default function ReservationsPage() {
                             variant="light"
                             color="primary"
                             className="text-red-600 hover:text-red-700"
+                            startContent={<PencilIcon className="w-4 h-4" />}
                             onPress={() => {
                               router.push(`/reserve/${reservation.id}`);
                             }}
-                          >
-                            Edit
-                          </Button>
+                          />
                           <CancelReservation reservation={reservation} />
                         </div>
                       </TableCell>

@@ -3,6 +3,10 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
+      "@services/*": ["./src/services/*"],
+      "@validators/*": ["./src/validators/*"],
+      "@contexts/*": ["src/contexts/*"],
+      "@repos/*": ["./src/repos/*"],
       "@utils/*": ["./src/utils/*"],
       "@hooks/*": ["./src/hooks/*"],
       "@components/*": ["./src/components/*"],

@@ -1,6 +1,7 @@
 'use client';
 
 import { useUser } from '@clerk/nextjs';
+import { useConfirm } from '@components/ConfirmDialog';
 import {
   ArrowLeftIcon,
   BuildingOfficeIcon,
@@ -9,8 +10,7 @@ import {
   DocumentTextIcon,
   ExclamationTriangleIcon,
   PencilIcon,
-  TrashIcon,
-  UserIcon,
+  TrashIcon
 } from '@heroicons/react/24/outline';
 import {
   addToast,
@@ -29,7 +29,6 @@ import Link from 'next/link';
 import { useParams, useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 import { useDeleteReservation, useReservation } from '../../../hooks/useReservations';
-import { useConfirm } from '@components/ConfirmDialog';
 
 const statusColorMap = {
   confirmed: 'success',
@@ -298,32 +297,6 @@ export default function ViewReservationPage() {
 
           {/* Sidebar */}
           <div className="space-y-6">
-            {/* User Information */}
-            <Card className="shadow-lg">
-              <CardHeader className="bg-gradient-to-r from-purple-600 to-purple-700 text-white">
-                <div className="flex items-center gap-3">
-                  <UserIcon className="w-6 h-6" />
-                  <h2 className="text-xl font-semibold">Reserved By</h2>
-                </div>
-              </CardHeader>
-              <CardBody className="p-6">
-                <div className="space-y-2">
-                  <div>
-                    <p className="text-sm text-gray-600">Name</p>
-                    <p className="font-semibold text-gray-800">
-                      {currentReservation.userName || 'Unknown User'}
-                    </p>
-                  </div>
-                  <div>
-                    <p className="text-sm text-gray-600">Email</p>
-                    <p className="font-semibold text-gray-800">
-                      {currentReservation.userEmail || 'N/A'}
-                    </p>
-                  </div>
-                </div>
-              </CardBody>
-            </Card>
-
             {/* Actions */}
             <Card className="shadow-lg">
               <CardHeader className="bg-gradient-to-r from-gray-600 to-gray-700 text-white">

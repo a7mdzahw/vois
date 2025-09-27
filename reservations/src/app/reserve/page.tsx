@@ -5,7 +5,11 @@ import { useState, useEffect } from 'react';
 
 import { useUser } from '@clerk/nextjs';
 import { useRouter } from 'next/navigation';
-import {parseDate, getLocalTimeZone, CalendarDate} from "@internationalized/date";
+import {
+  parseDate,
+  getLocalTimeZone,
+  CalendarDate,
+} from '@internationalized/date';
 import {
   DatePicker,
   Button,
@@ -26,10 +30,11 @@ import {
   ClockIcon,
   CheckCircleIcon,
 } from '@heroicons/react/24/outline';
-import { useRooms } from '../../hooks/useRooms';
-import { useReservationsWithCreate } from '../../hooks/useReservations';
+import { useRooms } from '@hooks/useRooms';
+import { useCreateReservation } from '@hooks/useReservations';
 import { useQuery } from '@tanstack/react-query';
 import { formatDate, formatTime } from '@utils/date';
+import { ReservationStatus } from '@contexts/reservation.context';
 
 interface Room {
   id: string;
@@ -45,33 +50,35 @@ interface TimeSlot {
   available: boolean;
 }
 
-
 export default function ReservePage() {
   const { user, isLoaded } = useUser();
   const router = useRouter();
   const { data: rooms = [], isLoading: isLoadingRooms } = useRooms();
   const today = formatDate(new Date());
 
-  const { createReservation } = useReservationsWithCreate();
-
+  const createReservation = useCreateReservation();
 
   const [currentStep, setCurrentStep] = useState(0);
   const [selectedRoom, setSelectedRoom] = useState<Room | null>(null);
   const [selectedTimeSlot, setSelectedTimeSlot] = useState<TimeSlot | null>(
     null
   );
-  const [selectedDate, setSelectedDate] = useState<CalendarDate | null>(parseDate(today));
+  const [selectedDate, setSelectedDate] = useState<CalendarDate | null>(
+    parseDate(today)
+  );
   const [purpose, setPurpose] = useState('');
-  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const { data: timeSlots = [], isLoading: isLoadingTimeSlots } = useQuery({
     enabled: !!selectedRoom?.id && !!selectedDate,
     queryKey: ['time-slots', selectedRoom?.id, selectedDate],
-    queryFn: () => fetch(`/api/reservations/available?roomId=${selectedRoom!.id}&date=${selectedDate}`).then(res => res.json()),
+    queryFn: () =>
+      fetch(
+        `/api/reservations/available?roomId=${
+          selectedRoom!.id
+        }&date=${selectedDate}`
+      ).then((res) => res.json()),
   });
 
-
-  console.log({timeSlots});
 
   useEffect(() => {
     if (isLoaded && !user) {
@@ -110,35 +117,27 @@ export default function ReservePage() {
       return;
     }
 
-    setIsSubmitting(true);
-    try {
-      await createReservation.mutateAsync({
-        roomId: selectedRoom.id,
-        date: selectedTimeSlot.start,
-        status: 'confirmed',
-        purpose: purpose,
-      });
+    await createReservation.mutateAsync({
+      roomId: selectedRoom.id,
+      date: selectedTimeSlot.start,
+      status: ReservationStatus.CONFIRMED,
+      purpose: purpose,
+    });
 
-      // Reset form
-      setCurrentStep(0);
-      setSelectedRoom(null);
-      setSelectedTimeSlot(null);
-      setSelectedDate(null);
-      setPurpose('');
+    // Reset form
+    setCurrentStep(0);
+    setSelectedRoom(null);
+    setSelectedTimeSlot(null);
+    setSelectedDate(null);
+    setPurpose('');
 
-      addToast({
-        title: 'Reservation created successfully!',
-        description: 'Your reservation has been created successfully.',
-        color: 'success',
-      });
+    addToast({
+      title: 'Reservation created successfully!',
+      description: 'Your reservation has been created successfully.',
+      color: 'success',
+    });
 
-      router.push('/');
-    } catch (error) {
-      console.error('Error creating reservation:', error);
-      alert('Failed to create reservation. Please try again.');
-    } finally {
-      setIsSubmitting(false);
-    }
+    router.push('/');
   };
 
   const canProceed = () => {
@@ -247,9 +246,9 @@ export default function ReservePage() {
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                   {isLoadingRooms && (
                     <>
-                        <Skeleton className="w-full h-40" />
-                        <Skeleton className="w-full h-40" />
-                        <Skeleton className="w-full h-40" />
+                      <Skeleton className="w-full h-40" />
+                      <Skeleton className="w-full h-40" />
+                      <Skeleton className="w-full h-40" />
                     </>
                   )}
 
@@ -289,7 +288,7 @@ export default function ReservePage() {
                                 {room.name}
                               </h3>
                               <p className="text-sm text-gray-600 flex items-center gap-1">
-                                Capacity: <b>{(room).capacity || 'N/A'}</b>
+                                Capacity: <b>{room.capacity || 'N/A'}</b>
                                 People
                               </p>
                             </div>
@@ -337,56 +336,62 @@ export default function ReservePage() {
                       Available Time Slots
                     </h3>
                     <div className="h-40 flex flex-col gap-2 overflow-y-auto">
-                      {
-                        isLoadingTimeSlots && (
-                          <>
-                            <Skeleton className="w-full h-12 mx-8 my-2 shrink-0" />
-                            <Skeleton className="w-full h-12 mx-8 my-2 shrink-0" />
-                            <Skeleton className="w-full h-12 mx-8 my-2 shrink-0" />
-                          </>
-                        )
-                      }
+                      {isLoadingTimeSlots && (
+                        <>
+                          <Skeleton className="w-full h-12 mx-8 my-2 shrink-0" />
+                          <Skeleton className="w-full h-12 mx-8 my-2 shrink-0" />
+                          <Skeleton className="w-full h-12 mx-8 my-2 shrink-0" />
+                        </>
+                      )}
 
-                      {timeSlots.map((slot: {id: string, start: string, end: string, available: boolean}) => (
-                        <Card
-                          key={slot.start}
-                          isPressable={slot.available}
-                          onPress={() =>
-                            slot.available && setSelectedTimeSlot(slot)
-                          }
-                          className={`cursor-pointer transition-all duration-200 h-fit shrink-0 mx-8 my-2 ${
-                            !slot.available
-                              ? 'opacity-50 cursor-not-allowed'
-                              : selectedTimeSlot?.id === slot.id
-                              ? 'ring-2 ring-red-500 bg-red-50'
-                              : 'hover:shadow-md hover:scale-102'
-                          }`}
-                        >
-                          <CardBody className="p-4">
-                            <div className="flex items-center justify-between">
-                              <span className="text-gray-700 font-medium">
-                                {formatTime(slot.start)} - {formatTime(slot.end)}
-                              </span>
-                              {!slot.available ? (
-                                <Badge
-                                  placement='top-left'
-                                  content="Booked"
-                                  color="danger"
-                                  size="sm"
-                                >
+                      {timeSlots.map(
+                        (slot: {
+                          id: string;
+                          start: string;
+                          end: string;
+                          available: boolean;
+                        }) => (
+                          <Card
+                            key={slot.start}
+                            isPressable={slot.available}
+                            onPress={() =>
+                              slot.available && setSelectedTimeSlot(slot)
+                            }
+                            className={`cursor-pointer transition-all duration-200 h-fit shrink-0 mx-8 my-2 ${
+                              !slot.available
+                                ? 'opacity-50 cursor-not-allowed'
+                                : selectedTimeSlot?.id === slot.id
+                                ? 'ring-2 ring-red-500 bg-red-50'
+                                : 'hover:shadow-md hover:scale-102'
+                            }`}
+                          >
+                            <CardBody className="p-4">
+                              <div className="flex items-center justify-between">
+                                <span className="text-gray-700 font-medium">
+                                  {formatTime(slot.start)} -{' '}
+                                  {formatTime(slot.end)}
+                                </span>
+                                {!slot.available ? (
+                                  <Badge
+                                    placement="top-left"
+                                    content="Booked"
+                                    color="danger"
+                                    size="sm"
+                                  >
+                                    <ClockIcon className="w-5 h-5 text-gray-400" />
+                                  </Badge>
+                                ) : selectedTimeSlot?.id === slot.id ? (
+                                  <Chip color="danger" size="sm">
+                                    Selected
+                                  </Chip>
+                                ) : (
                                   <ClockIcon className="w-5 h-5 text-gray-400" />
-                                </Badge>
-                              ) : selectedTimeSlot?.id === slot.id ? (
-                                <Chip color="danger" size="sm">
-                                  Selected
-                                </Chip>
-                              ) : (
-                                <ClockIcon className="w-5 h-5 text-gray-400" />
-                              )}
-                            </div>
-                          </CardBody>
-                        </Card>
-                      ))}
+                                )}
+                              </div>
+                            </CardBody>
+                          </Card>
+                        )
+                      )}
                     </div>
                   </div>
                 </div>
@@ -409,13 +414,16 @@ export default function ReservePage() {
                     <div className="flex justify-between">
                       <span className="text-gray-600">Date:</span>
                       <span className="font-medium">
-                        {selectedDate ? formatDate(selectedDate.toDate(getLocalTimeZone())) : 'N/A'}
+                        {selectedDate
+                          ? formatDate(selectedDate.toDate(getLocalTimeZone()))
+                          : 'N/A'}
                       </span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-gray-600">Time:</span>
                       <span className="font-medium">
-                        {formatTime(selectedTimeSlot!.start)} - {formatTime(selectedTimeSlot!.end)}
+                        {formatTime(selectedTimeSlot!.start)} -{' '}
+                        {formatTime(selectedTimeSlot!.end)}
                       </span>
                     </div>
                     <div className="flex justify-between">
@@ -476,12 +484,12 @@ export default function ReservePage() {
               ) : (
                 <Button
                   onPress={handleSubmit}
-                  isDisabled={!canProceed() || isSubmitting}
+                  isDisabled={!canProceed() || createReservation.isPending}
                   color="danger"
                   className="px-8"
-                  isLoading={isSubmitting}
+                  isLoading={createReservation.isPending}
                 >
-                  {isSubmitting
+                  {createReservation.isPending
                     ? 'Creating Reservation...'
                     : 'Confirm Reservation'}
                 </Button>

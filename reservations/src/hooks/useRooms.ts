@@ -1,22 +1,14 @@
 import { useQuery } from '@tanstack/react-query';
-
-export interface Room {
-  id: string;
-  name: string;
-  icon?: string;
-  capacity?: number;
-}
+import { client } from '@utils/http';
+import { Room } from '@contexts/room.context';
 
 // Hook to fetch all rooms
 export function useRooms() {
   return useQuery<Room[]>({
     queryKey: ['rooms'],
-    queryFn: async () => {
-      const response = await fetch('/api/rooms');
-      if (!response.ok) {
-        throw new Error('Failed to fetch rooms');
-      }
-      return response.json();
-    },
+    queryFn: () =>
+      client('/api/rooms', {
+        errorMessage: 'Failed to fetch rooms',
+      }),
   });
 }

@@ -1,8 +1,10 @@
 'use client';
 
 import { Button } from '@heroui/react';
-import { Reservation, useCancelReservation } from '@hooks/useReservations';
+import { useCancelReservation } from '@hooks/useReservations';
+import { Reservation } from '@contexts/reservation.context';
 import { useConfirm } from './ConfirmDialog';
+import { TrashIcon } from '@heroicons/react/24/outline';
 
 export default function CancelReservation({
   reservation,
@@ -28,12 +30,12 @@ export default function CancelReservation({
         if (!confirmed) return;
         await cancelReservation(reservation.id);
       }}
+      startContent={<TrashIcon className="w-4 h-4" />}
       variant="light"
       color="danger"
       size="sm"
       className="text-red-600 hover:text-red-700"
-    >
-      Cancel
-    </Button>
+    />
+
   );
 }

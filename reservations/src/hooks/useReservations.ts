@@ -1,36 +1,18 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-
-export interface Reservation {
-  id: string;
-  date: string;
-  status: 'confirmed' | 'pending' | 'cancelled';
-  purpose: string;
-  roomId: string | null;
-  userId: string | null;
-  roomName: string | null;
-  roomIcon: string | null;
-  userName: string | null;
-  userEmail: string | null;
-}
-
-export interface CreateReservationData {
-  roomId: string;
-  date: string;
-  status: 'confirmed' | 'pending' | 'cancelled';
-  purpose: string;
-}
+import { client } from '@utils/http';
+import {
+  CreateReservationDto,
+  Reservation,
+} from '@contexts/reservation.context';
 
 // Hook to fetch all reservations
 export function useReservations() {
   return useQuery<Reservation[]>({
     queryKey: ['reservations'],
-    queryFn: async () => {
-      const response = await fetch('/api/reservations');
-      if (!response.ok) {
-        throw new Error('Failed to fetch reservations');
-      }
-      return response.json();
-    },
+    queryFn: () =>
+      client('/api/reservations', {
+        errorMessage: 'Failed to fetch reservations',
+      }),
   });
 }
 
@@ -38,13 +20,10 @@ export function useReservations() {
 export function useReservation(reservationId: string) {
   return useQuery<Reservation>({
     queryKey: ['reservation', reservationId],
-    queryFn: async () => {
-      const response = await fetch(`/api/reservations/${reservationId}`);
-      if (!response.ok) {
-        throw new Error('Failed to fetch reservation');
-      }
-      return response.json();
-    },
+    queryFn: () =>
+      client(`/api/reservations/${reservationId}`, {
+        errorMessage: 'Failed to fetch reservation',
+      }),
   });
 }
 
@@ -53,37 +32,21 @@ export function useCreateReservation() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async (data: CreateReservationData) => {
-      const response = await fetch('/api/reservations', {
+    mutationFn: async (data: CreateReservationDto) =>
+      client('/api/reservations', {
         method: 'POST',
+        errorMessage: 'Failed to create reservation',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(data),
-      });
+      }),
 
-      if (!response.ok) {
-        throw new Error('Failed to create reservation');
-      }
-
-      return response.json();
-    },
     onSuccess: () => {
       // Invalidate and refetch reservations after successful creation
       queryClient.invalidateQueries({ queryKey: ['reservations'] });
     },
   });
-}
-
-// Export both hooks for convenience
-export function useReservationsWithCreate() {
-  const reservations = useReservations();
-  const createReservation = useCreateReservation();
-
-  return {
-    ...reservations,
-    createReservation,
-  };
 }
 
 // Hook to update a reservation
@@ -96,22 +59,16 @@ export function useUpdateReservation() {
       data,
     }: {
       reservationId: string;
-      data: CreateReservationData;
-    }) => {
-      const response = await fetch(`/api/reservations/${reservationId}`, {
+      data: CreateReservationDto;
+    }) =>
+      client(`/api/reservations/${reservationId}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(data),
-      });
-
-      if (!response.ok) {
-        throw new Error('Failed to update reservation');
-      }
-
-      return response.json();
-    },
+        errorMessage: 'Failed to update reservation',
+      }),
     onSuccess: () => {
       // Invalidate and refetch reservations after successful update
       queryClient.invalidateQueries({ queryKey: ['reservations'] });
@@ -124,15 +81,11 @@ export function useDeleteReservation() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async (reservationId: string) => {
-      const response = await fetch(`/api/reservations/${reservationId}`, {
+    mutationFn: async (reservationId: string) =>
+      client(`/api/reservations/${reservationId}`, {
         method: 'DELETE',
-      });
-      if (!response.ok) {
-        throw new Error('Failed to delete reservation');
-      }
-      return response.json();
-    },
+        errorMessage: 'Failed to delete reservation',
+      }),
     onSuccess: () => {
       // Invalidate and refetch reservations after successful deletion
       queryClient.invalidateQueries({ queryKey: ['reservations'] });
@@ -149,18 +102,14 @@ export function useCancelReservation() {
       queryClient.invalidateQueries({ queryKey: ['reservations'] });
     },
 
-    mutationFn: async (reservationId: string) => {
-      const response = await fetch('/api/reservations/cancel', {
+    mutationFn: async (reservationId: string) =>
+      client('/api/reservations/cancel', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({ reservationId }),
-      });
-      if (!response.ok) {
-        throw new Error('Failed to cancel reservation');
-      }
-      return response.json();
-    },
+        errorMessage: 'Failed to cancel reservation',
+      }),
   });
 }

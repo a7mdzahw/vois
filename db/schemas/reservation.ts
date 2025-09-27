@@ -12,7 +12,7 @@ export const statuses = pgEnum('statuses', {
 export const reservations = pgTable('reservations', {
   id: uuid('id').primaryKey().defaultRandom(),
   roomId: uuid('room_id').references(() => rooms.id),
-  user: uuid('user_id').references(() => users.id),
+  userId: uuid('user_id').references(() => users.id),
   date: timestamp('date', { withTimezone: true }).notNull(),
   status: statuses('status').notNull(),
   purpose: text('purpose').notNull(),

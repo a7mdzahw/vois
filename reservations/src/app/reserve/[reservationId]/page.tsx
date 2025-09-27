@@ -30,14 +30,12 @@ import {
   PencilIcon,
 } from '@heroicons/react/24/outline';
 import { useUser } from '@clerk/nextjs';
-import { useRooms } from '../../../hooks/useRooms';
-import {
-  useReservation,
-  useUpdateReservation,
-} from '../../../hooks/useReservations';
+import { useRooms } from '@hooks/useRooms';
+import { useReservation, useUpdateReservation } from '@hooks/useReservations';
 import { useQuery } from '@tanstack/react-query';
 import { formatDate, formatTime } from '@utils/date';
 import { addMinutes } from 'date-fns';
+import { ReservationStatus } from '@contexts/reservation.context';
 
 interface Room {
   id: string;
@@ -176,7 +174,7 @@ export default function EditReservationPage() {
         data: {
           roomId: selectedRoom.id,
           date: selectedTimeSlot.start,
-          status: 'confirmed',
+          status: ReservationStatus.CONFIRMED,
           purpose: purpose,
         },
       });
