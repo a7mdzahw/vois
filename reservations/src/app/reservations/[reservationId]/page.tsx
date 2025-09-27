@@ -1,6 +1,5 @@
 'use client';
 
-import { useUser } from '@clerk/nextjs';
 import { useConfirm } from '@components/ConfirmDialog';
 import {
   ArrowLeftIcon,
@@ -10,7 +9,7 @@ import {
   DocumentTextIcon,
   ExclamationTriangleIcon,
   PencilIcon,
-  TrashIcon
+  TrashIcon,
 } from '@heroicons/react/24/outline';
 import {
   addToast,
@@ -27,8 +26,7 @@ import { formatDate, formatDateTime, formatTime } from '@utils/date';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useParams, useRouter } from 'next/navigation';
-import { useEffect } from 'react';
-import { useDeleteReservation, useReservation } from '../../../hooks/useReservations';
+import { useDeleteReservation, useReservation } from '@hooks/useReservations';
 
 const statusColorMap = {
   confirmed: 'success',
@@ -43,35 +41,27 @@ const statusIconMap = {
 } as const;
 
 export default function ViewReservationPage() {
-  const { user, isLoaded } = useUser();
   const router = useRouter();
   const params = useParams();
   const reservationId = params?.reservationId as string;
   const confirm = useConfirm();
 
-
   const deleteReservation = useDeleteReservation();
 
-
   // Find the current reservation
-  const {data: currentReservation, isLoading: isLoadingReservation} = useReservation(reservationId);
-
-  useEffect(() => {
-    if (isLoaded && !user) {
-      router.push('/login');
-    }
-  }, [isLoaded, user, router]);
+  const { data: currentReservation, isLoading: isLoadingReservation } =
+    useReservation(reservationId);
 
   const handleDelete = async () => {
     if (!currentReservation) return;
 
-        const confirmed = await confirm({
-          title: 'Delete Reservation',
-          message: `Are you sure you want to delete this reservation for ${currentReservation.roomName}? This action cannot be undone.`,
-          confirmLabel: 'Delete',
-          rejectLabel: 'Cancel',
-          confirmButtonProps: { color: 'danger' },
-        });
+    const confirmed = await confirm({
+      title: 'Delete Reservation',
+      message: `Are you sure you want to delete this reservation for ${currentReservation.roomName}? This action cannot be undone.`,
+      confirmLabel: 'Delete',
+      rejectLabel: 'Cancel',
+      confirmButtonProps: { color: 'danger' },
+    });
 
     if (!confirmed) return;
 
@@ -95,7 +85,7 @@ export default function ViewReservationPage() {
     }
   };
 
-  if (!isLoaded || isLoadingReservation) {
+  if (isLoadingReservation) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
@@ -105,17 +95,18 @@ export default function ViewReservationPage() {
     );
   }
 
-  if (!user) {
-    return null;
-  }
-
   if (!currentReservation) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
           <ExclamationTriangleIcon className="w-16 h-16 text-red-500 mx-auto mb-4" />
-          <h1 className="text-2xl font-bold text-gray-800 mb-4">Reservation Not Found</h1>
-          <p className="text-gray-600 mb-6">The reservation you&apos;re looking for doesn&apos;t exist or has been deleted.</p>
+          <h1 className="text-2xl font-bold text-gray-800 mb-4">
+            Reservation Not Found
+          </h1>
+          <p className="text-gray-600 mb-6">
+            The reservation you&apos;re looking for doesn&apos;t exist or has
+            been deleted.
+          </p>
           <Button
             color="danger"
             onPress={() => router.push('/')}
@@ -130,8 +121,10 @@ export default function ViewReservationPage() {
 
   const reservationDate = new Date(currentReservation.date);
   const isPastReservation = reservationDate < new Date();
-  const canEdit = !isPastReservation && currentReservation.status !== 'cancelled';
-  const canCancel = !isPastReservation && currentReservation.status !== 'cancelled';
+  const canEdit =
+    !isPastReservation && currentReservation.status !== 'cancelled';
+  const canCancel =
+    !isPastReservation && currentReservation.status !== 'cancelled';
 
   return (
     <div className="min-h-screen bg-gray-50 py-8 px-4">
@@ -166,7 +159,7 @@ export default function ViewReservationPage() {
                 startContent={statusIconMap[currentReservation.status]}
               >
                 {currentReservation.status.charAt(0).toUpperCase() +
-                 currentReservation.status.slice(1)}
+                  currentReservation.status.slice(1)}
               </Chip>
             </div>
           </div>
@@ -187,20 +180,25 @@ export default function ViewReservationPage() {
               <CardBody className="p-6">
                 <div className="flex items-center gap-4">
                   <div className="p-3 bg-gray-100 rounded-lg">
-                  {currentReservation.roomIcon && <Image
-                      src={currentReservation.roomIcon}
-                      alt={currentReservation.roomName || 'Room'}
-                      width={48}
-                      height={48}
-                      className="w-12 h-12"
-                    />}
+                    {currentReservation.roomIcon && (
+                      <Image
+                        src={currentReservation.roomIcon}
+                        alt={currentReservation.roomName || 'Room'}
+                        width={48}
+                        height={48}
+                        className="w-12 h-12"
+                      />
+                    )}
                   </div>
                   <div>
                     <h3 className="text-2xl font-bold text-gray-800">
                       {currentReservation.roomName || 'Unknown Room'}
                     </h3>
                     <p className="text-gray-600">
-                      Reservation ID: <span className="font-mono text-sm">{currentReservation.id}</span>
+                      Reservation ID:{' '}
+                      <span className="font-mono text-sm">
+                        {currentReservation.id}
+                      </span>
                     </p>
                   </div>
                 </div>
@@ -244,7 +242,8 @@ export default function ViewReservationPage() {
                       <span className="font-medium">Past Reservation</span>
                     </div>
                     <p className="text-yellow-700 text-sm mt-1">
-                      This reservation has already passed and cannot be modified.
+                      This reservation has already passed and cannot be
+                      modified.
                     </p>
                   </div>
                 )}
@@ -262,7 +261,9 @@ export default function ViewReservationPage() {
               <CardBody className="p-6">
                 <div className="space-y-4">
                   <div>
-                    <h3 className="font-medium text-gray-700 mb-2">Meeting Purpose</h3>
+                    <h3 className="font-medium text-gray-700 mb-2">
+                      Meeting Purpose
+                    </h3>
                     <p className="text-gray-800 bg-gray-50 p-4 rounded-lg">
                       {currentReservation.purpose}
                     </p>
@@ -272,7 +273,9 @@ export default function ViewReservationPage() {
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
-                      <h3 className="font-medium text-gray-700 mb-2">Reservation Status</h3>
+                      <h3 className="font-medium text-gray-700 mb-2">
+                        Reservation Status
+                      </h3>
                       <Chip
                         variant="flat"
                         color={statusColorMap[currentReservation.status]}
@@ -280,11 +283,13 @@ export default function ViewReservationPage() {
                         size="lg"
                       >
                         {currentReservation.status.charAt(0).toUpperCase() +
-                         currentReservation.status.slice(1)}
+                          currentReservation.status.slice(1)}
                       </Chip>
                     </div>
                     <div>
-                      <h3 className="font-medium text-gray-700 mb-2">Created</h3>
+                      <h3 className="font-medium text-gray-700 mb-2">
+                        Created
+                      </h3>
                       <p className="text-gray-800">
                         {formatDateTime(reservationDate)}
                       </p>
@@ -321,7 +326,9 @@ export default function ViewReservationPage() {
                       color="warning"
                       variant="flat"
                       className="w-full"
-                      startContent={<ExclamationTriangleIcon className="w-4 h-4" />}
+                      startContent={
+                        <ExclamationTriangleIcon className="w-4 h-4" />
+                      }
                     >
                       Cancel Reservation
                     </Button>
@@ -336,7 +343,9 @@ export default function ViewReservationPage() {
                     isLoading={deleteReservation.isPending}
                     isDisabled={deleteReservation.isPending}
                   >
-                    {deleteReservation.isPending ? 'Deleting...' : 'Delete Reservation'}
+                    {deleteReservation.isPending
+                      ? 'Deleting...'
+                      : 'Delete Reservation'}
                   </Button>
 
                   <Button
@@ -370,15 +379,21 @@ export default function ViewReservationPage() {
                   </div>
                   <div className="flex justify-between">
                     <span className="text-gray-600">Room:</span>
-                    <span className="font-medium">{currentReservation.roomName}</span>
+                    <span className="font-medium">
+                      {currentReservation.roomName}
+                    </span>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-gray-600">Date:</span>
-                    <span className="font-medium">{formatDate(reservationDate)}</span>
+                    <span className="font-medium">
+                      {formatDate(reservationDate)}
+                    </span>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-gray-600">Time:</span>
-                    <span className="font-medium">{formatTime(reservationDate.toISOString())}</span>
+                    <span className="font-medium">
+                      {formatTime(reservationDate.toISOString())}
+                    </span>
                   </div>
                 </div>
               </CardBody>

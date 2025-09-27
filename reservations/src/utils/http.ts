@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { ZodSchema } from 'zod';
+import { ZodError, ZodSchema } from 'zod';
 import qs from 'qs';
+import { HttpError } from 'http-errors';
 
 interface Options<TBody, TQuery> {
   body: TBody;
@@ -29,7 +30,16 @@ export async function trial<TBody, TQuery>(
     });
   } catch (error) {
     console.error('Error:', error);
-    throw error;
+
+    if (error instanceof HttpError) {
+      return NextResponse.json(error.message, { status: error.statusCode });
+    }
+
+    if (error instanceof ZodError) {
+      return NextResponse.json(error.issues, { status: 400 });
+    }
+
+    return NextResponse.json('Internal Server Error', { status: 500 });
   }
 }
 

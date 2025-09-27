@@ -1,6 +1,18 @@
 import { clerkMiddleware } from '@clerk/nextjs/server';
+import { NextResponse } from 'next/server';
 
-export default clerkMiddleware();
+const publicRoutes = ['/login', '/signup'];
+
+export default clerkMiddleware(async (auth, req) => {
+  const { isAuthenticated } = await auth();
+
+  console.log(req.nextUrl.pathname);
+
+  if (!isAuthenticated && !publicRoutes.includes(req.nextUrl.pathname)) {
+    console.log('Unauthorized');
+    return NextResponse.redirect(new URL('/login', req.url));
+  }
+});
 
 export const config = {
   matcher: [

@@ -2,7 +2,7 @@ import { Db } from '@vois/db/drizzle';
 import { users } from '@vois/db/schemas/user';
 import { eq } from 'drizzle-orm';
 import { auth } from '@clerk/nextjs/server';
-import { NextResponse } from 'next/server';
+import { Unauthorized, NotFound } from 'http-errors';
 
 export class UserRepo {
   constructor(private readonly db: Db) {}
@@ -11,7 +11,7 @@ export class UserRepo {
     const { userId: clerkId } = await auth();
 
     if (!clerkId) {
-      throw NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+      throw new Unauthorized('Unauthorized');
     }
 
     const user = await this.db
@@ -20,7 +20,7 @@ export class UserRepo {
       .where(eq(users.clerkId, clerkId));
 
     if (!user[0]) {
-      throw NextResponse.json({ error: 'User not found' }, { status: 404 });
+      throw new NotFound('User not found');
     }
 
     return user[0];

@@ -1,41 +1,40 @@
 'use client';
 
-import Image from 'next/image';
-import { useState, useEffect } from 'react';
-import { useParams, useRouter } from 'next/navigation';
+import { ReservationStatus } from '@contexts/reservation.context';
 import {
-  parseDate,
-  getLocalTimeZone,
-  CalendarDate,
-} from '@internationalized/date';
+  BuildingOfficeIcon,
+  CheckCircleIcon,
+  ClockIcon,
+  PencilIcon,
+} from '@heroicons/react/24/outline';
 import {
-  DatePicker,
+  addToast,
+  Badge,
   Button,
   Card,
   CardBody,
   CardHeader,
-  Textarea,
-  Divider,
   Chip,
-  Badge,
+  DatePicker,
+  Divider,
   Progress,
-  addToast,
   Skeleton,
   Spinner,
+  Textarea,
 } from '@heroui/react';
-import {
-  BuildingOfficeIcon,
-  ClockIcon,
-  CheckCircleIcon,
-  PencilIcon,
-} from '@heroicons/react/24/outline';
-import { useUser } from '@clerk/nextjs';
-import { useRooms } from '@hooks/useRooms';
 import { useReservation, useUpdateReservation } from '@hooks/useReservations';
+import { useRooms } from '@hooks/useRooms';
+import {
+  CalendarDate,
+  getLocalTimeZone,
+  parseDate,
+} from '@internationalized/date';
 import { useQuery } from '@tanstack/react-query';
 import { formatDate, formatTime } from '@utils/date';
 import { addMinutes } from 'date-fns';
-import { ReservationStatus } from '@contexts/reservation.context';
+import Image from 'next/image';
+import { useParams, useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
 
 interface Room {
   id: string;
@@ -52,7 +51,6 @@ interface TimeSlot {
 }
 
 export default function EditReservationPage() {
-  const { user, isLoaded } = useUser();
   const router = useRouter();
   const params = useParams();
   const reservationId = params?.reservationId as string;
@@ -112,13 +110,9 @@ export default function EditReservationPage() {
     }
   }, [currentReservation, rooms]);
 
-  useEffect(() => {
-    if (isLoaded && !user) {
-      router.push('/login');
-    }
-  }, [isLoaded, user, router]);
 
-  if (!isLoaded || isLoading) {
+
+  if (isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
@@ -128,9 +122,7 @@ export default function EditReservationPage() {
     );
   }
 
-  if (!user) {
-    return null;
-  }
+
 
   if (!currentReservation) {
     return (

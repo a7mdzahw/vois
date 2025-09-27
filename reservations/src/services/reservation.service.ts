@@ -4,6 +4,7 @@ import { UserRepo } from '@repos/user.repo';
 import { db } from '@vois/db/drizzle';
 import { isEqual } from 'date-fns';
 import { generateSlots } from '@utils/slots';
+import { NotFound, Unauthorized } from 'http-errors';
 
 export class ReservationService {
   private async isReservationOwner(id: string) {
@@ -27,11 +28,11 @@ export class ReservationService {
     const reservation = await reservationRepo.getReservationById(id);
 
     if (!reservation) {
-      throw new Error('Reservation not found');
+      throw new NotFound('Reservation not found');
     }
 
     if (!this.isReservationOwner(id)) {
-      throw new Error('Unauthorized');
+      throw new Unauthorized('Unauthorized');
     }
 
     return reservation;
@@ -50,7 +51,7 @@ export class ReservationService {
 
   async updateReservation(id: string, reservation: CreateReservationDto) {
     if (!this.isReservationOwner(id)) {
-      throw new Error('Unauthorized');
+      throw new Unauthorized('Unauthorized');
     }
     const reservationRepo = new ReservationRepo(db);
     const updatedReservation = await reservationRepo.updateReservation(
@@ -59,7 +60,7 @@ export class ReservationService {
     );
 
     if (!updatedReservation[0]) {
-      throw new Error('Reservation not found');
+      throw new NotFound('Reservation not found');
     }
 
     return updatedReservation;
@@ -67,7 +68,7 @@ export class ReservationService {
 
   async deleteReservation(id: string) {
     if (!this.isReservationOwner(id)) {
-      throw new Error('Unauthorized');
+      throw new Unauthorized('Unauthorized');
     }
     const reservationRepo = new ReservationRepo(db);
     const deletedReservation = await reservationRepo.deleteReservation(id);
@@ -76,7 +77,7 @@ export class ReservationService {
 
   async cancelReservation(id: string) {
     if (!this.isReservationOwner(id)) {
-      throw new Error('Unauthorized');
+      throw new Unauthorized('Unauthorized');
     }
     const reservationRepo = new ReservationRepo(db);
     const cancelledReservation = await reservationRepo.cancelReservation(id);

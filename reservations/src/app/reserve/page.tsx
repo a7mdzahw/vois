@@ -1,40 +1,38 @@
 'use client';
 
 import Image from 'next/image';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 
-import { useUser } from '@clerk/nextjs';
-import { useRouter } from 'next/navigation';
+import { ReservationStatus } from '@contexts/reservation.context';
 import {
-  parseDate,
-  getLocalTimeZone,
-  CalendarDate,
-} from '@internationalized/date';
+  BuildingOfficeIcon,
+  CheckCircleIcon,
+  ClockIcon,
+} from '@heroicons/react/24/outline';
 import {
-  DatePicker,
+  addToast,
+  Badge,
   Button,
   Card,
   CardBody,
   CardHeader,
-  Textarea,
-  Divider,
   Chip,
-  Badge,
+  DatePicker,
+  Divider,
   Progress,
-  addToast,
   Skeleton,
-  Spinner,
+  Textarea,
 } from '@heroui/react';
-import {
-  BuildingOfficeIcon,
-  ClockIcon,
-  CheckCircleIcon,
-} from '@heroicons/react/24/outline';
-import { useRooms } from '@hooks/useRooms';
 import { useCreateReservation } from '@hooks/useReservations';
+import { useRooms } from '@hooks/useRooms';
+import {
+  CalendarDate,
+  getLocalTimeZone,
+  parseDate,
+} from '@internationalized/date';
 import { useQuery } from '@tanstack/react-query';
 import { formatDate, formatTime } from '@utils/date';
-import { ReservationStatus } from '@contexts/reservation.context';
+import { useRouter } from 'next/navigation';
 
 interface Room {
   id: string;
@@ -51,7 +49,6 @@ interface TimeSlot {
 }
 
 export default function ReservePage() {
-  const { user, isLoaded } = useUser();
   const router = useRouter();
   const { data: rooms = [], isLoading: isLoadingRooms } = useRooms();
   const today = formatDate(new Date());
@@ -78,27 +75,6 @@ export default function ReservePage() {
         }&date=${selectedDate}`
       ).then((res) => res.json()),
   });
-
-
-  useEffect(() => {
-    if (isLoaded && !user) {
-      router.push('/login');
-    }
-  }, [isLoaded, user, router]);
-
-  if (!isLoaded) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-center">
-          <Spinner size="lg" label="Loading..." />
-        </div>
-      </div>
-    );
-  }
-
-  if (!user) {
-    return null;
-  }
 
   const handleNext = () => {
     if (currentStep < 2) {
