@@ -400,6 +400,56 @@ summary svg {
   display: inline;
   margin-top: -0.25rem;
 }
+
+/* FullCalendar Custom Styles */
+.fc-button-primary {
+  background-color: #dc2626 !important;
+  border-color: #dc2626 !important;
+  color: #ffffff !important;
+}
+
+.fc-button-primary:hover {
+  background-color: #b91c1c !important;
+  border-color: #b91c1c !important;
+}
+
+.fc-button-primary:focus {
+  box-shadow: 0 0 0 0.2rem rgba(220, 38, 38, 0.25) !important;
+}
+
+.fc-button-primary:not(:disabled):active {
+  background-color: #991b1b !important;
+  border-color: #991b1b !important;
+}
+
+.fc-button-primary:disabled {
+  background-color: #fca5a5 !important;
+  border-color: #fca5a5 !important;
+  color: #ffffff !important;
+}
+
+/* FullCalendar Navigation Button Icons */
+.fc-button-prev::before {
+  content: "←";
+  font-size: 1.2em;
+  font-weight: bold;
+}
+
+.fc-button-next::before {
+  content: "→";
+  font-size: 1.2em;
+  font-weight: bold;
+}
+
+.fc-button-prev .fc-button-content,
+.fc-button-next .fc-button-content {
+  display: none;
+}
+
+.fc-list-day th {
+  background-color: #dc2626 !important;
+  color: #fff !important;
+}
 @media screen and (min-width: 768px) {
   #hero {
     grid-template-columns: repeat(2, minmax(0, 1fr));

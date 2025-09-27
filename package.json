@@ -10,6 +10,11 @@
   "private": true,
   "dependencies": {
     "@clerk/nextjs": "^6.32.2",
+    "@fullcalendar/core": "^6.1.19",
+    "@fullcalendar/daygrid": "^6.1.19",
+    "@fullcalendar/list": "^6.1.19",
+    "@fullcalendar/react": "^6.1.19",
+    "@fullcalendar/timegrid": "^6.1.19",
     "@heroicons/react": "^2.2.0",
     "@heroui/react": "^2.8.4",
     "@heroui/system": "^2.4.22",

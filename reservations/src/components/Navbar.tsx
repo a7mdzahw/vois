@@ -17,13 +17,15 @@ import { useUser, UserButton } from '@clerk/nextjs';
 import {
   ArrowRightIcon,
   CalendarIcon,
+  ListBulletIcon,
   PlusIcon,
 } from '@heroicons/react/24/outline';
 
 const menuItems = [
+  { name: 'List', href: '/', icon: <ListBulletIcon className="w-4 h-4" /> },
   {
-    name: 'Reservations',
-    href: '/',
+    name: 'Calendar',
+    href: '/reservations',
     icon: <CalendarIcon className="w-4 h-4" />,
   },
   { name: 'Reserve', href: '/reserve', icon: <PlusIcon className="w-4 h-4" /> },

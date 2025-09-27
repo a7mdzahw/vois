@@ -114,7 +114,7 @@ export default function ReservationsPage() {
                 <TableColumn>#</TableColumn>
                 <TableColumn>ROOM</TableColumn>
                 <TableColumn>DATE / TIME</TableColumn>
-                <TableColumn>STATUS</TableColumn>
+                <TableColumn className="hidden md:table-cell">STATUS</TableColumn>
                 <TableColumn>ACTIONS</TableColumn>
               </TableHeader>
               <TableBody>
@@ -142,7 +142,7 @@ export default function ReservationsPage() {
                         </div>
                       </TableCell>
                       <TableCell className="font-semibold">{formatDateTime(reservation.date)}</TableCell>
-                      <TableCell>
+                      <TableCell className="hidden md:table-cell">
                         <Chip
                           variant="flat"
                           size="sm"
