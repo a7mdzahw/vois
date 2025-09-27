@@ -69,7 +69,7 @@ export default function Navbar() {
                     pathname === item.href,
                   'text-gray-600 hover:text-red-600 hover:bg-red-50':
                     pathname !== item.href,
-                }
+                },
               )}
             >
               {item.icon}
@@ -118,7 +118,7 @@ export default function Navbar() {
                 {
                   'text-red-600 font-semibold': pathname === item.href,
                   'text-gray-600': pathname !== item.href,
-                }
+                },
               )}
               href={item.href}
             >

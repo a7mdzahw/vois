@@ -44,7 +44,7 @@ export class ReservationService {
     const user = await userRepo.getCurrentUser();
     const newReservation = await reservationRepo.createReservation(
       user.id,
-      reservation
+      reservation,
     );
     return newReservation;
   }
@@ -56,7 +56,7 @@ export class ReservationService {
     const reservationRepo = new ReservationRepo(db);
     const updatedReservation = await reservationRepo.updateReservation(
       id,
-      reservation
+      reservation,
     );
 
     if (!updatedReservation[0]) {
@@ -92,7 +92,7 @@ export class ReservationService {
     const reservationRepo = new ReservationRepo(db);
     const reservedSlots = await reservationRepo.getRoomReservationsByDate(
       roomId,
-      date
+      date,
     );
 
     const slots = generateSlots(open, close, 30); // 30 minute slots

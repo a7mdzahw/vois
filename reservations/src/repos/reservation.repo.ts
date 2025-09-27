@@ -23,7 +23,6 @@ export class ReservationRepo {
       .where(eq(reservations.userId, userId))
       .orderBy(asc(reservations.date));
 
-
     return allReservations;
   }
 
@@ -48,15 +47,15 @@ export class ReservationRepo {
 
   async getRoomReservationsByDate(roomId: string, date: string) {
     const existing = await this.db
-    .select()
-    .from(reservations)
-    .where(
-      and(
-        eq(reservations.roomId, roomId),
-        eq(reservations.status, 'confirmed'),
-        sql`${reservations.date}::date = ${date}::date`
-      )
-    );
+      .select()
+      .from(reservations)
+      .where(
+        and(
+          eq(reservations.roomId, roomId),
+          eq(reservations.status, 'confirmed'),
+          sql`${reservations.date}::date = ${date}::date`,
+        ),
+      );
 
     return existing;
   }
@@ -106,6 +105,4 @@ export class ReservationRepo {
       .returning();
     return cancelledReservation;
   }
-
-
 }

@@ -16,7 +16,7 @@ interface ContextConfigs<TBody, TQuery> {
 export async function trial<TBody, TQuery>(
   request: NextRequest,
   fn: (options: Options<TBody, TQuery>) => Promise<NextResponse>,
-  { bodySchema, querySchema }: ContextConfigs<TBody, TQuery> = {}
+  { bodySchema, querySchema }: ContextConfigs<TBody, TQuery> = {},
 ) {
   try {
     const body = await request?.json().catch(() => ({}));
@@ -47,7 +47,7 @@ export const client = async <TData, TError = Error>(
   endpoint: string,
   options: RequestInit & {
     errorMessage?: string | ((error: TError) => string);
-  } = {}
+  } = {},
 ) => {
   const response = await fetch(endpoint, {
     ...options,
@@ -66,7 +66,8 @@ export const client = async <TData, TError = Error>(
     }
 
     throw new Error(
-      options.errorMessage || `Failed to ${options.method || 'GET'} ${endpoint}`
+      options.errorMessage ||
+        `Failed to ${options.method || 'GET'} ${endpoint}`,
     );
   }
 

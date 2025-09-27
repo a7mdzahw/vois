@@ -20,9 +20,7 @@ export default function RootLayout({
           <HeroUIProvider>
             <div className="min-h-screen bg-gray-50">
               <Navbar />
-              <main>
-                {children}
-              </main>
+              <main>{children}</main>
             </div>
           </HeroUIProvider>
         </Providers>

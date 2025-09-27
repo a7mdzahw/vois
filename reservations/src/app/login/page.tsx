@@ -39,29 +39,25 @@ export default function LoginPage() {
           Sign in to your account to manage your reservations
         </p>
 
-
-
-      <SignIn
-            appearance={{
-              elements: {
-                formButtonPrimary: 'bg-red-600 hover:bg-red-700 text-sm normal-case',
-                card: 'shadow-none',
-                headerTitle: 'hidden',
-                headerSubtitle: 'hidden',
-                socialButtonsBlockButton: 'border-gray-300 hover:bg-gray-50',
-                socialButtonsBlockButtonText: 'font-normal',
-                formFieldInput: 'border-gray-300 focus:border-red-500 focus:ring-red-500',
-                footerActionLink: 'text-red-600 hover:text-red-700',
-              },
-            }}
-            redirectUrl="/"
-            signUpUrl="/signup"
-          />
+        <SignIn
+          appearance={{
+            elements: {
+              formButtonPrimary:
+                'bg-red-600 hover:bg-red-700 text-sm normal-case',
+              card: 'shadow-none',
+              headerTitle: 'hidden',
+              headerSubtitle: 'hidden',
+              socialButtonsBlockButton: 'border-gray-300 hover:bg-gray-50',
+              socialButtonsBlockButtonText: 'font-normal',
+              formFieldInput:
+                'border-gray-300 focus:border-red-500 focus:ring-red-500',
+              footerActionLink: 'text-red-600 hover:text-red-700',
+            },
+          }}
+          redirectUrl="/"
+          signUpUrl="/signup"
+        />
       </div>
-
-
-
-
     </div>
   );
 }

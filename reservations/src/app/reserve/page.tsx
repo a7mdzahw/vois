@@ -58,10 +58,10 @@ export default function ReservePage() {
   const [currentStep, setCurrentStep] = useState(0);
   const [selectedRoom, setSelectedRoom] = useState<Room | null>(null);
   const [selectedTimeSlot, setSelectedTimeSlot] = useState<TimeSlot | null>(
-    null
+    null,
   );
   const [selectedDate, setSelectedDate] = useState<CalendarDate | null>(
-    parseDate(today)
+    parseDate(today),
   );
   const [purpose, setPurpose] = useState('');
 
@@ -72,7 +72,7 @@ export default function ReservePage() {
       fetch(
         `/api/reservations/available?roomId=${
           selectedRoom!.id
-        }&date=${selectedDate}`
+        }&date=${selectedDate}`,
       ).then((res) => res.json()),
   });
 
@@ -337,8 +337,8 @@ export default function ReservePage() {
                               !slot.available
                                 ? 'opacity-50 cursor-not-allowed'
                                 : selectedTimeSlot?.id === slot.id
-                                ? 'ring-2 ring-red-500 bg-red-50'
-                                : 'hover:shadow-md hover:scale-102'
+                                  ? 'ring-2 ring-red-500 bg-red-50'
+                                  : 'hover:shadow-md hover:scale-102'
                             }`}
                           >
                             <CardBody className="p-4">
@@ -366,7 +366,7 @@ export default function ReservePage() {
                               </div>
                             </CardBody>
                           </Card>
-                        )
+                        ),
                       )}
                     </div>
                   </div>

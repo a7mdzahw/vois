@@ -1,7 +1,7 @@
 export function generateSlots(
   open: string,
   close: string,
-  intervalMinutes: number
+  intervalMinutes: number,
 ) {
   const slots: { start: Date; end: Date }[] = [];
   let start = new Date(open);

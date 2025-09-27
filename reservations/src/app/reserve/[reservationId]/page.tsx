@@ -62,7 +62,7 @@ export default function EditReservationPage() {
   const [currentStep, setCurrentStep] = useState(0);
   const [selectedRoom, setSelectedRoom] = useState<Room | null>(null);
   const [selectedTimeSlot, setSelectedTimeSlot] = useState<TimeSlot | null>(
-    null
+    null,
   );
   const [selectedDate, setSelectedDate] = useState<CalendarDate | null>(null);
   const [purpose, setPurpose] = useState('');
@@ -82,7 +82,7 @@ export default function EditReservationPage() {
       fetch(
         `/api/reservations/available?roomId=${
           selectedRoom!.id
-        }&date=${selectedDate}`
+        }&date=${selectedDate}`,
       ).then((res) => res.json()),
   });
 
@@ -110,8 +110,6 @@ export default function EditReservationPage() {
     }
   }, [currentReservation, rooms]);
 
-
-
   if (isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -121,8 +119,6 @@ export default function EditReservationPage() {
       </div>
     );
   }
-
-
 
   if (!currentReservation) {
     return (
@@ -406,8 +402,8 @@ export default function EditReservationPage() {
                               !slot.available
                                 ? 'opacity-50 cursor-not-allowed'
                                 : selectedTimeSlot?.start === slot.start
-                                ? 'ring-2 ring-red-500 bg-red-50'
-                                : 'hover:shadow-md hover:scale-102'
+                                  ? 'ring-2 ring-red-500 bg-red-50'
+                                  : 'hover:shadow-md hover:scale-102'
                             }`}
                           >
                             <CardBody className="p-4">
@@ -435,7 +431,7 @@ export default function EditReservationPage() {
                               </div>
                             </CardBody>
                           </Card>
-                        )
+                        ),
                       )}
                     </div>
                   </div>
@@ -502,7 +498,7 @@ export default function EditReservationPage() {
                         <span className="font-medium">
                           {selectedDate
                             ? formatDate(
-                                selectedDate.toDate(getLocalTimeZone())
+                                selectedDate.toDate(getLocalTimeZone()),
                               )
                             : 'N/A'}
                         </span>
@@ -512,7 +508,7 @@ export default function EditReservationPage() {
                         <span className="font-medium">
                           {selectedTimeSlot
                             ? `${formatTime(
-                                selectedTimeSlot.start
+                                selectedTimeSlot.start,
                               )} - ${formatTime(selectedTimeSlot.end)}`
                             : 'N/A'}
                         </span>

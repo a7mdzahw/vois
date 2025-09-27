@@ -10,9 +10,9 @@ export async function POST(request: NextRequest) {
     async ({ body }) => {
       const reservationService = new ReservationService();
       return NextResponse.json(
-        await reservationService.cancelReservation(body.reservationId)
+        await reservationService.cancelReservation(body.reservationId),
       );
     },
-    { bodySchema: cancelReservationValidator }
+    { bodySchema: cancelReservationValidator },
   );
 }

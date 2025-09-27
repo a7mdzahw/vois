@@ -11,7 +11,6 @@ export interface CreateReservationDto {
   purpose: string;
 }
 
-
 export interface Reservation {
   id: string;
   date: string;

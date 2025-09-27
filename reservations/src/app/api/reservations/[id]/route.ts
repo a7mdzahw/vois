@@ -6,14 +6,14 @@ import { NextRequest, NextResponse } from 'next/server';
 // GET /api/reservations/[id] - Get a reservation
 export async function GET(
   request: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
+  { params }: { params: Promise<{ id: string }> },
 ) {
   const reservationId = (await params).id;
 
   return trial(request, async () => {
     const reservationService = new ReservationService();
     return NextResponse.json(
-      await reservationService.getReservationById(reservationId)
+      await reservationService.getReservationById(reservationId),
     );
   });
 }
@@ -21,7 +21,7 @@ export async function GET(
 // PUT /api/reservations/[id] - Update a reservation
 export async function PUT(
   request: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
+  { params }: { params: Promise<{ id: string }> },
 ) {
   const reservationId = (await params).id;
 
@@ -30,24 +30,24 @@ export async function PUT(
     async ({ body }) => {
       const reservationService = new ReservationService();
       return NextResponse.json(
-        await reservationService.updateReservation(reservationId, body)
+        await reservationService.updateReservation(reservationId, body),
       );
     },
-    { bodySchema: createReservationValidator }
+    { bodySchema: createReservationValidator },
   );
 }
 
 // DELETE /api/reservations/[id] - Delete a reservation
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
+  { params }: { params: Promise<{ id: string }> },
 ) {
   const reservationId = (await params).id;
 
   return trial(request, async () => {
     const reservationService = new ReservationService();
     return NextResponse.json(
-      await reservationService.deleteReservation(reservationId)
+      await reservationService.deleteReservation(reservationId),
     );
   });
 }

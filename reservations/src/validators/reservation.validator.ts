@@ -17,7 +17,6 @@ export const availableSlotsValidator = z.object({
   date: z.string(),
 });
 
-
 // Types
 export type CreateReservationValidator = z.infer<
   typeof createReservationValidator
@@ -27,6 +26,4 @@ export type CancelReservationValidator = z.infer<
   typeof cancelReservationValidator
 >;
 
-export type AvailableSlotsValidator = z.infer<
-  typeof availableSlotsValidator
->;
+export type AvailableSlotsValidator = z.infer<typeof availableSlotsValidator>;

@@ -162,7 +162,7 @@ export function ConfirmProvider({ children }: { children: ReactNode }) {
             rejectLabel={rejectLabel}
             handleClose={handleClose}
           />,
-          ref.current
+          ref.current,
         )}
       {children}
     </ConfirmContext.Provider>

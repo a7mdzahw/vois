@@ -1,5 +1,5 @@
 const { createGlobPatternsForDependencies } = require('@nx/next/tailwind');
-const { heroui } = require("@heroui/react");
+const { heroui } = require('@heroui/react');
 
 /** @type {import('tailwindcss').Config} */
 module.exports = {
@@ -45,13 +45,15 @@ module.exports = {
       },
     },
   },
-  plugins: [heroui({
-    layout: {
-    radius: {
-      small: '1px',
-      medium: '2px',
-      large: '3px',
-    }
-    }
-  })],
+  plugins: [
+    heroui({
+      layout: {
+        radius: {
+          small: '1px',
+          medium: '2px',
+          large: '3px',
+        },
+      },
+    }),
+  ],
 };

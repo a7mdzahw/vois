@@ -1,5 +1,5 @@
-import { RoomRepo } from "@repos/room.repo";
-import { db } from "@vois/db/drizzle";
+import { RoomRepo } from '@repos/room.repo';
+import { db } from '@vois/db/drizzle';
 
 export class RoomService {
   private readonly roomRepo = new RoomRepo(db);

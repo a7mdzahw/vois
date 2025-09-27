@@ -18,7 +18,11 @@ import {
 import { useReservations } from '../hooks/useReservations';
 import Image from 'next/image';
 import Link from 'next/link';
-import { PlusIcon, MagnifyingGlassIcon, PencilIcon } from '@heroicons/react/24/outline';
+import {
+  PlusIcon,
+  MagnifyingGlassIcon,
+  PencilIcon,
+} from '@heroicons/react/24/outline';
 import { formatDateTime } from '@utils/date';
 import { useRouter } from 'next/navigation';
 import CancelReservation from '@components/CancelReservation';
@@ -114,7 +118,9 @@ export default function ReservationsPage() {
                 <TableColumn>#</TableColumn>
                 <TableColumn>ROOM</TableColumn>
                 <TableColumn>DATE / TIME</TableColumn>
-                <TableColumn className="hidden md:table-cell">STATUS</TableColumn>
+                <TableColumn className="hidden md:table-cell">
+                  STATUS
+                </TableColumn>
                 <TableColumn>ACTIONS</TableColumn>
               </TableHeader>
               <TableBody>
@@ -132,16 +138,20 @@ export default function ReservationsPage() {
                       </TableCell>
                       <TableCell className="font-semibold">
                         <div className="flex items-center gap-2">
-                         {reservation.roomIcon && <Image
-                            src={reservation.roomIcon}
-                            alt={reservation.roomName || 'Unknown Room'}
-                            width={20}
-                            height={20}
-                          />}
+                          {reservation.roomIcon && (
+                            <Image
+                              src={reservation.roomIcon}
+                              alt={reservation.roomName || 'Unknown Room'}
+                              width={20}
+                              height={20}
+                            />
+                          )}
                           {reservation.roomName || 'Unknown Room'}
                         </div>
                       </TableCell>
-                      <TableCell className="font-semibold">{formatDateTime(reservation.date)}</TableCell>
+                      <TableCell className="font-semibold">
+                        {formatDateTime(reservation.date)}
+                      </TableCell>
                       <TableCell className="hidden md:table-cell">
                         <Chip
                           variant="flat"
