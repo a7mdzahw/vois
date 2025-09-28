@@ -32,7 +32,7 @@ export default function Calendar() {
     if (isWeekView || isListMonthView) {
       return (
         <div
-          className="text-sm font-semibold text-gray-800 rounded-sm bg-primary-400 w-full cursor-pointer"
+          className="text-sm font-semibold rounded-sm w-full cursor-pointer"
           onClick={onClick}
         >
           {event.event.title}
@@ -42,7 +42,7 @@ export default function Calendar() {
 
     return (
       <div
-        className="text-sm font-semibold text-gray-800 p-2 rounded-sm bg-primary-400 w-full cursor-pointer"
+        className="text-white text-sm font-semibold p-2 rounded-sm bg-sky-600 w-full cursor-pointer"
         onClick={onClick}
       >
         {event.event.title}

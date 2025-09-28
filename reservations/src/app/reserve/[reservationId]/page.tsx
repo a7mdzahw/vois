@@ -1,9 +1,10 @@
 'use client';
 
 import { Button, Spinner } from '@heroui/react';
-import { useReservation } from '@hooks/useReservations';
 import { useParams, useRouter } from 'next/navigation';
-import ReservePage from '../page';
+import { useReservation } from '@hooks/useReservations';
+
+import ReserveForm from '../components/ReserveForm';
 
 export default function EditReservationPage() {
   const router = useRouter();
@@ -37,5 +38,5 @@ export default function EditReservationPage() {
     );
   }
 
-  return <ReservePage reservation={currentReservation} />;
+  return <ReserveForm reservation={currentReservation} />;
 }

@@ -70,9 +70,10 @@ export function useUpdateReservation() {
         body: JSON.stringify(data),
         errorMessage: 'Failed to update reservation',
       }),
-    onSuccess: () => {
+    onSuccess: (_, { reservationId }) => {
       // Invalidate and refetch reservations after successful update
       queryClient.invalidateQueries({ queryKey: ['reservations'] });
+      queryClient.invalidateQueries({ queryKey: ['reservation', reservationId] });
     },
   });
 }
