@@ -1,24 +1,33 @@
+import { z } from 'zod';
+
+import { ISOString } from './shared.context';
+import {
+  createReservationValidator,
+  availableSlotsValidator,
+} from '@validators/reservation.validator';
+
 export enum ReservationStatus {
   CONFIRMED = 'confirmed',
   PENDING = 'pending',
   CANCELLED = 'cancelled',
 }
 
-export interface CreateReservationDto {
-  roomId: string;
-  date: string;
-  status: ReservationStatus;
-  purpose: string;
-}
-
 export interface Reservation {
   id: string;
-  date: string;
+  date: ISOString;
   status: ReservationStatus;
   purpose: string;
-  roomId: string | null;
-  roomName: string | null;
-  roomIcon: string | null;
-  userName: string | null;
-  userEmail: string | null;
+  roomId: string;
+  roomName: string;
+  roomIcon: string;
+}
+
+export type CreateReservationDto = z.infer<typeof createReservationValidator>;
+export type AvailableSlotsDto = z.infer<typeof availableSlotsValidator>;
+
+export interface TimeSlot {
+  id: string;
+  start: ISOString;
+  end: ISOString;
+  available: boolean;
 }

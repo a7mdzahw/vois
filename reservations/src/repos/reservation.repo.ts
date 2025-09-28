@@ -2,7 +2,12 @@ import { Db } from '@vois/db/drizzle';
 import { reservations } from '@vois/db/schemas/reservation';
 import { rooms } from '@vois/db/schemas/room';
 import { and, asc, eq, sql } from 'drizzle-orm';
-import { CreateReservationDto } from '@contexts/reservation.context';
+import {
+  AvailableSlotsDto,
+  CreateReservationDto,
+} from '@contexts/reservation.context';
+import { formatDate } from '@utils/date';
+import { parseISO } from 'date-fns';
 
 export class ReservationRepo {
   constructor(private db: Db) {}
@@ -45,7 +50,7 @@ export class ReservationRepo {
     return reservation[0];
   }
 
-  async getRoomReservationsByDate(roomId: string, date: string) {
+  async getRoomReservationsByDate({ roomId, date }: AvailableSlotsDto) {
     const existing = await this.db
       .select()
       .from(reservations)
@@ -53,8 +58,8 @@ export class ReservationRepo {
         and(
           eq(reservations.roomId, roomId),
           eq(reservations.status, 'confirmed'),
-          sql`${reservations.date}::date = ${date}::date`,
-        ),
+          sql`${reservations.date}::date = ${date}::date`
+        )
       );
 
     return existing;
@@ -66,7 +71,7 @@ export class ReservationRepo {
       .values({
         roomId: reservation.roomId,
         userId: userId,
-        date: new Date(reservation.date),
+        date: parseISO(reservation.date),
         status: reservation.status,
         purpose: reservation.purpose,
       })
@@ -79,10 +84,8 @@ export class ReservationRepo {
     const updatedReservation = await this.db
       .update(reservations)
       .set({
-        roomId: reservation.roomId,
-        date: new Date(reservation.date),
-        status: reservation.status,
-        purpose: reservation.purpose,
+        ...reservation,
+        date: parseISO(reservation.date),
       })
       .where(eq(reservations.id, id))
       .returning();

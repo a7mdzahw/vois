@@ -1,18 +1,23 @@
+import { addMinutes, isBefore, isAfter } from 'date-fns';
 export function generateSlots(
-  open: string,
-  close: string,
-  intervalMinutes: number,
+  open: Date,
+  close: Date,
+  intervalMinutes: number
 ) {
   const slots: { start: Date; end: Date }[] = [];
-  let start = new Date(open);
-  const end = new Date(close);
 
-  while (start < end) {
-    const slotEnd = new Date(start.getTime() + intervalMinutes * 60000);
-    if (slotEnd <= end) {
-      slots.push({ start: new Date(start), end: slotEnd });
+  let start = open;
+  const end = close;
+
+  while (isBefore(start, end)) {
+    const slotEnd = addMinutes(start, intervalMinutes);
+
+    if (isAfter(start, new Date())) {
+      slots.push({ start, end: slotEnd });
     }
+
     start = slotEnd;
   }
+
   return slots;
 }

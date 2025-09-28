@@ -1,9 +1,10 @@
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { client } from '@utils/http';
 import {
   CreateReservationDto,
   Reservation,
+  TimeSlot
 } from '@contexts/reservation.context';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { client } from '@utils/http';
 
 // Hook to fetch all reservations
 export function useReservations() {
@@ -24,6 +25,19 @@ export function useReservation(reservationId: string) {
       client(`/api/reservations/${reservationId}`, {
         errorMessage: 'Failed to fetch reservation',
       }),
+  });
+}
+
+// time slots
+export function useTimeSlots(roomId: string, date: Date) {
+  return useQuery<TimeSlot[]>({
+    staleTime: 1000 * 60 * 5,
+    enabled: !!roomId && !!date,
+    queryKey: ['time-slots', roomId, date],
+    queryFn: () =>
+      client(
+        `/api/reservations/available?roomId=${roomId}&date=${date}`
+      ),
   });
 }
 

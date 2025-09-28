@@ -9,12 +9,9 @@ export async function GET(request: NextRequest) {
     async ({ query }) => {
       const reservationService = new ReservationService();
       return NextResponse.json(
-        await reservationService.getRoomAvailableSlots(
-          query.roomId,
-          query.date,
-        ),
+        await reservationService.getRoomAvailableSlots(query)
       );
     },
-    { querySchema: availableSlotsValidator },
+    { querySchema: availableSlotsValidator }
   );
 }

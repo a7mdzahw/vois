@@ -1,8 +1,8 @@
-import { CreateReservationDto } from '@contexts/reservation.context';
+import { AvailableSlotsDto, CreateReservationDto } from '@contexts/reservation.context';
 import { ReservationRepo } from '@repos/reservation.repo';
 import { UserRepo } from '@repos/user.repo';
 import { db } from '@vois/db/drizzle';
-import { isEqual } from 'date-fns';
+import { isEqual, setHours, setMinutes, setSeconds } from 'date-fns';
 import { generateSlots } from '@utils/slots';
 import { NotFound, Unauthorized } from 'http-errors';
 
@@ -42,10 +42,7 @@ export class ReservationService {
     const userRepo = new UserRepo(db);
     const reservationRepo = new ReservationRepo(db);
     const user = await userRepo.getCurrentUser();
-    const newReservation = await reservationRepo.createReservation(
-      user.id,
-      reservation,
-    );
+    const newReservation = await reservationRepo.createReservation(user.id, reservation);
     return newReservation;
   }
 
@@ -54,10 +51,7 @@ export class ReservationService {
       throw new Unauthorized('Unauthorized');
     }
     const reservationRepo = new ReservationRepo(db);
-    const updatedReservation = await reservationRepo.updateReservation(
-      id,
-      reservation,
-    );
+    const updatedReservation = await reservationRepo.updateReservation(id, reservation);
 
     if (!updatedReservation[0]) {
       throw new NotFound('Reservation not found');
@@ -84,20 +78,16 @@ export class ReservationService {
     return cancelledReservation;
   }
 
-  async getRoomAvailableSlots(roomId: string, date: string) {
+  async getRoomAvailableSlots(query: AvailableSlotsDto) {
     // TODO: Make this dynamic based on the room's working hours
-    const open = `${date}T09:00:00`;
-    const close = `${date}T18:00:00`;
+    // set hours to 9am and minutes to 0
+    const open = setHours(setSeconds(setMinutes(query.date, 0), 0), 9);
+    const close = setHours(setSeconds(setMinutes(query.date, 0), 0), 17);
 
     const reservationRepo = new ReservationRepo(db);
-    const reservedSlots = await reservationRepo.getRoomReservationsByDate(
-      roomId,
-      date,
-    );
+    const reservedSlots = await reservationRepo.getRoomReservationsByDate(query);
 
-    const slots = generateSlots(open, close, 30); // 30 minute slots
-
-    return slots.map((slot) => {
+    const slots = generateSlots(open, close, 30).map((slot) => {
       const isReserved = reservedSlots.some((r) => isEqual(slot.start, r.date));
       return {
         id: slot.start.toISOString(),
@@ -106,5 +96,7 @@ export class ReservationService {
         available: !isReserved,
       };
     });
+
+    return slots;
   }
 }

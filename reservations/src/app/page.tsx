@@ -181,7 +181,7 @@ export default function ReservationsPage() {
                   ))
                 ) : (
                   <TableRow>
-                    <TableCell colSpan={7} className="text-center py-8">
+                    <TableCell colSpan={5} className="text-center py-8">
                       <p className="text-gray-500">No reservations found</p>
                     </TableCell>
                   </TableRow>
