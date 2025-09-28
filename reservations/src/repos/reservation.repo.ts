@@ -2,10 +2,7 @@ import { Db } from '@vois/db/drizzle';
 import { reservations } from '@vois/db/schemas/reservation';
 import { rooms } from '@vois/db/schemas/room';
 import { and, asc, eq, sql } from 'drizzle-orm';
-import {
-  AvailableSlotsDto,
-  CreateReservationDto,
-} from '@contexts/reservation.context';
+import { AvailableSlotsDto, CreateReservationDto } from '@contexts/reservation.context';
 import { formatDate } from '@utils/date';
 import { parseISO } from 'date-fns';
 
@@ -58,8 +55,8 @@ export class ReservationRepo {
         and(
           eq(reservations.roomId, roomId),
           eq(reservations.status, 'confirmed'),
-          sql`${reservations.date}::date = ${date}::date`
-        )
+          sql`${reservations.date}::date = ${date}::date`,
+        ),
       );
 
     return existing;
@@ -93,10 +90,7 @@ export class ReservationRepo {
   }
 
   async deleteReservation(id: string) {
-    const deletedReservation = await this.db
-      .delete(reservations)
-      .where(eq(reservations.id, id))
-      .returning();
+    const deletedReservation = await this.db.delete(reservations).where(eq(reservations.id, id)).returning();
     return deletedReservation;
   }
 

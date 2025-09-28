@@ -14,12 +14,7 @@ import {
 } from '@heroui/react';
 
 import { useUser, UserButton } from '@clerk/nextjs';
-import {
-  ArrowRightIcon,
-  CalendarIcon,
-  ListBulletIcon,
-  PlusIcon,
-} from '@heroicons/react/24/outline';
+import { ArrowRightIcon, CalendarIcon, ListBulletIcon, PlusIcon } from '@heroicons/react/24/outline';
 
 const menuItems = [
   { name: 'List', href: '/', icon: <ListBulletIcon className="w-4 h-4" /> },
@@ -36,11 +31,7 @@ export default function Navbar() {
   const { user } = useUser();
 
   return (
-    <NextUINavbar
-      maxWidth="xl"
-      className="bg-white shadow-md border-b border-gray-200"
-      isBordered
-    >
+    <NextUINavbar maxWidth="xl" className="bg-white shadow-md border-b border-gray-200" isBordered>
       <NavbarContent>
         <NavbarMenuToggle className="sm:hidden" />
         <NavbarBrand>
@@ -62,15 +53,10 @@ export default function Navbar() {
           <NavbarItem key={item.name} isActive={pathname === item.href}>
             <Link
               href={item.href}
-              className={classnames(
-                'px-4 py-2 rounded-sm transition-colors duration-200 flex items-center gap-2',
-                {
-                  'bg-red-100 text-red-700 font-semibold':
-                    pathname === item.href,
-                  'text-gray-600 hover:text-red-600 hover:bg-red-50':
-                    pathname !== item.href,
-                },
-              )}
+              className={classnames('px-4 py-2 rounded-sm transition-colors duration-200 flex items-center gap-2', {
+                'bg-red-100 text-red-700 font-semibold': pathname === item.href,
+                'text-gray-600 hover:text-red-600 hover:bg-red-50': pathname !== item.href,
+              })}
             >
               {item.icon}
               {item.name}

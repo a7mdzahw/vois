@@ -65,10 +65,7 @@ export const client = async <TData, TError = Error>(
       throw new Error(options.errorMessage(error as TError));
     }
 
-    throw new Error(
-      options.errorMessage ||
-        `Failed to ${options.method || 'GET'} ${endpoint}`,
-    );
+    throw new Error(options.errorMessage || `Failed to ${options.method || 'GET'} ${endpoint}`);
   }
 
   return responseData as TData;

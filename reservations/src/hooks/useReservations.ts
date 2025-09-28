@@ -1,8 +1,4 @@
-import {
-  CreateReservationDto,
-  Reservation,
-  TimeSlot
-} from '@contexts/reservation.context';
+import { CreateReservationDto, Reservation, TimeSlot } from '@contexts/reservation.context';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { client } from '@utils/http';
 
@@ -34,10 +30,7 @@ export function useTimeSlots(roomId: string, date: Date) {
     staleTime: 1000 * 60 * 5,
     enabled: !!roomId && !!date,
     queryKey: ['time-slots', roomId, date],
-    queryFn: () =>
-      client(
-        `/api/reservations/available?roomId=${roomId}&date=${date}`
-      ),
+    queryFn: () => client(`/api/reservations/available?roomId=${roomId}&date=${date}`),
   });
 }
 
@@ -68,13 +61,7 @@ export function useUpdateReservation() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async ({
-      reservationId,
-      data,
-    }: {
-      reservationId: string;
-      data: CreateReservationDto;
-    }) =>
+    mutationFn: async ({ reservationId, data }: { reservationId: string; data: CreateReservationDto }) =>
       client(`/api/reservations/${reservationId}`, {
         method: 'PUT',
         headers: {

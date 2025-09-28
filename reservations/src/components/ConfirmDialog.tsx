@@ -1,24 +1,9 @@
 'use client';
 
-import {
-  createContext,
-  ReactNode,
-  useContext,
-  useEffect,
-  useRef,
-  useState,
-} from 'react';
+import { createContext, ReactNode, useContext, useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 
-import {
-  Button,
-  ButtonProps,
-  Modal,
-  ModalBody,
-  ModalContent,
-  ModalFooter,
-  ModalHeader,
-} from '@heroui/react';
+import { Button, ButtonProps, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader } from '@heroui/react';
 
 type ConfirmOptions = {
   title: string;
@@ -68,19 +53,10 @@ const ConfirmDialog = ({
           <div className="text-neutral-700">{message}</div>
         </ModalBody>
         <ModalFooter>
-          <Button
-            className="rounded-md"
-            variant="bordered"
-            onPress={() => handleClose(false)}
-            {...rejectButtonProps}
-          >
+          <Button className="rounded-md" variant="bordered" onPress={() => handleClose(false)} {...rejectButtonProps}>
             {rejectLabel}
           </Button>
-          <Button
-            className="main-button"
-            onPress={() => handleClose(true)}
-            {...confirmButtonProps}
-          >
+          <Button className="main-button" onPress={() => handleClose(true)} {...confirmButtonProps}>
             {confirmLabel}
           </Button>
         </ModalFooter>

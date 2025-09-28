@@ -17,9 +17,7 @@ export async function POST(request: NextRequest) {
     request,
     async ({ body }) => {
       const reservationService = new ReservationService();
-      return NextResponse.json(
-        await reservationService.createReservation(body),
-      );
+      return NextResponse.json(await reservationService.createReservation(body));
     },
     { bodySchema: createReservationValidator },
   );

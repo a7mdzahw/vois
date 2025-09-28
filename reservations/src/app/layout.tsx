@@ -8,11 +8,7 @@ export const metadata = {
   description: 'Reserve meeting rooms and spaces at VOIS Office',
 };
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
       <body>

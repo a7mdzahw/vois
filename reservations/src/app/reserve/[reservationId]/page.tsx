@@ -1,12 +1,7 @@
 'use client';
 
 import { ReservationStatus } from '@contexts/reservation.context';
-import {
-  BuildingOfficeIcon,
-  CheckCircleIcon,
-  ClockIcon,
-  PencilIcon,
-} from '@heroicons/react/24/outline';
+import { BuildingOfficeIcon, CheckCircleIcon, ClockIcon, PencilIcon } from '@heroicons/react/24/outline';
 import {
   addToast,
   Badge,
@@ -24,11 +19,7 @@ import {
 } from '@heroui/react';
 import { useReservation, useUpdateReservation } from '@hooks/useReservations';
 import { useRooms } from '@hooks/useRooms';
-import {
-  CalendarDate,
-  getLocalTimeZone,
-  parseDate,
-} from '@internationalized/date';
+import { CalendarDate, getLocalTimeZone, parseDate } from '@internationalized/date';
 import { useQuery } from '@tanstack/react-query';
 import { formatDate, formatTime } from '@utils/date';
 import { addMinutes } from 'date-fns';
@@ -61,9 +52,7 @@ export default function EditReservationPage() {
 
   const [currentStep, setCurrentStep] = useState(0);
   const [selectedRoom, setSelectedRoom] = useState<Room | null>(null);
-  const [selectedTimeSlot, setSelectedTimeSlot] = useState<TimeSlot | null>(
-    null,
-  );
+  const [selectedTimeSlot, setSelectedTimeSlot] = useState<TimeSlot | null>(null);
   const [selectedDate, setSelectedDate] = useState<CalendarDate | null>(null);
   const [purpose, setPurpose] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -79,11 +68,7 @@ export default function EditReservationPage() {
     enabled: !!selectedRoom?.id && !!selectedDate,
     queryKey: ['time-slots', selectedRoom?.id, selectedDate],
     queryFn: () =>
-      fetch(
-        `/api/reservations/available?roomId=${
-          selectedRoom!.id
-        }&date=${selectedDate}`,
-      ).then((res) => res.json()),
+      fetch(`/api/reservations/available?roomId=${selectedRoom!.id}&date=${selectedDate}`).then((res) => res.json()),
   });
 
   // Load reservation data when component mounts
@@ -124,12 +109,8 @@ export default function EditReservationPage() {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
-          <h1 className="text-2xl font-bold text-gray-800 mb-4">
-            Reservation Not Found
-          </h1>
-          <p className="text-gray-600 mb-6">
-            The reservation you&apos;re looking for doesn&apos;t exist.
-          </p>
+          <h1 className="text-2xl font-bold text-gray-800 mb-4">Reservation Not Found</h1>
+          <p className="text-gray-600 mb-6">The reservation you&apos;re looking for doesn&apos;t exist.</p>
           <Button color="danger" onPress={() => router.push('/')}>
             Go Back Home
           </Button>
@@ -234,42 +215,24 @@ export default function EditReservationPage() {
             <PencilIcon className="w-10 h-10 text-red-600" />
             Edit Reservation
           </h1>
-          <p className="text-lg text-gray-600">
-            Update your room reservation details
-          </p>
+          <p className="text-lg text-gray-600">Update your room reservation details</p>
         </div>
 
         {/* Progress Indicator */}
         <Card className="mb-8">
           <CardBody className="p-6">
             <div className="w-full">
-              <Progress
-                value={(currentStep + 1) * 33.33}
-                color="danger"
-                className="mb-4"
-              />
+              <Progress value={(currentStep + 1) * 33.33} color="danger" className="mb-4" />
               <div className="flex justify-between">
-                <div
-                  className={`flex flex-col items-center ${
-                    currentStep >= 0 ? 'text-red-600' : 'text-gray-400'
-                  }`}
-                >
+                <div className={`flex flex-col items-center ${currentStep >= 0 ? 'text-red-600' : 'text-gray-400'}`}>
                   <BuildingOfficeIcon className="w-6 h-6 mb-2" />
                   <span className="text-sm font-medium">Choose Room</span>
                 </div>
-                <div
-                  className={`flex flex-col items-center ${
-                    currentStep >= 1 ? 'text-red-600' : 'text-gray-400'
-                  }`}
-                >
+                <div className={`flex flex-col items-center ${currentStep >= 1 ? 'text-red-600' : 'text-gray-400'}`}>
                   <ClockIcon className="w-6 h-6 mb-2" />
                   <span className="text-sm font-medium">Select Time</span>
                 </div>
-                <div
-                  className={`flex flex-col items-center ${
-                    currentStep >= 2 ? 'text-red-600' : 'text-gray-400'
-                  }`}
-                >
+                <div className={`flex flex-col items-center ${currentStep >= 2 ? 'text-red-600' : 'text-gray-400'}`}>
                   <CheckCircleIcon className="w-6 h-6 mb-2" />
                   <span className="text-sm font-medium">Confirm</span>
                 </div>
@@ -308,32 +271,22 @@ export default function EditReservationPage() {
                         isPressable
                         onPress={() => setSelectedRoom(room)}
                         className={`cursor-pointer transition-all duration-200 ${
-                          isSelected
-                            ? 'ring-2 ring-red-500 bg-red-50'
-                            : 'hover:shadow-lg hover:scale-105'
+                          isSelected ? 'ring-2 ring-red-500 bg-red-50' : 'hover:shadow-lg hover:scale-105'
                         }`}
                       >
                         <CardBody className="p-6 text-center">
                           <div className="flex flex-col items-center space-y-4">
-                            <div
-                              className={`p-4 rounded-sm ${
-                                isSelected ? 'bg-red-100' : 'bg-gray-100'
-                              }`}
-                            >
+                            <div className={`p-4 rounded-sm ${isSelected ? 'bg-red-100' : 'bg-gray-100'}`}>
                               <Image
                                 width={32}
                                 height={32}
                                 src={room.icon || ''}
                                 alt={room.name}
-                                className={`w-8 h-8 ${
-                                  isSelected ? 'text-red-600' : 'text-gray-600'
-                                }`}
+                                className={`w-8 h-8 ${isSelected ? 'text-red-600' : 'text-gray-600'}`}
                               />
                             </div>
                             <div>
-                              <h3 className="text-lg font-semibold text-gray-800">
-                                {room.name}
-                              </h3>
+                              <h3 className="text-lg font-semibold text-gray-800">{room.name}</h3>
                               <p className="text-sm text-gray-600 flex items-center gap-1">
                                 Capacity: <b>{room.capacity || 'N/A'}</b> People
                               </p>
@@ -353,9 +306,7 @@ export default function EditReservationPage() {
                 <div className="grid grid-cols-1 gap-6">
                   {/* Date Selection */}
                   <div>
-                    <h3 className="text-lg font-semibold text-gray-700 mb-4">
-                      Select Date
-                    </h3>
+                    <h3 className="text-lg font-semibold text-gray-700 mb-4">Select Date</h3>
                     <DatePicker
                       label="Select Date"
                       value={selectedDate}
@@ -365,8 +316,7 @@ export default function EditReservationPage() {
                       size="lg"
                       classNames={{
                         input: 'text-gray-700',
-                        inputWrapper:
-                          'border-gray-300 hover:border-red-400 focus-within:border-red-500',
+                        inputWrapper: 'border-gray-300 hover:border-red-400 focus-within:border-red-500',
                       }}
                     />
                   </div>
@@ -385,54 +335,39 @@ export default function EditReservationPage() {
                         </>
                       )}
 
-                      {timeSlots.map(
-                        (slot: {
-                          id: string;
-                          start: string;
-                          end: string;
-                          available: boolean;
-                        }) => (
-                          <Card
-                            key={slot.start}
-                            isPressable={slot.available}
-                            onPress={() =>
-                              slot.available && setSelectedTimeSlot(slot)
-                            }
-                            className={`cursor-pointer transition-all duration-200 h-fit shrink-0 mx-8 my-2 ${
-                              !slot.available
-                                ? 'opacity-50 cursor-not-allowed'
-                                : selectedTimeSlot?.start === slot.start
-                                  ? 'ring-2 ring-red-500 bg-red-50'
-                                  : 'hover:shadow-md hover:scale-102'
-                            }`}
-                          >
-                            <CardBody className="p-4">
-                              <div className="flex items-center justify-between">
-                                <span className="text-gray-700 font-medium">
-                                  {formatTime(slot.start)} -{' '}
-                                  {formatTime(slot.end)}
-                                </span>
-                                {!slot.available ? (
-                                  <Badge
-                                    placement="top-left"
-                                    content="Booked"
-                                    color="danger"
-                                    size="sm"
-                                  >
-                                    <ClockIcon className="w-5 h-5 text-gray-400" />
-                                  </Badge>
-                                ) : selectedTimeSlot?.id === slot.id ? (
-                                  <Chip color="danger" size="sm">
-                                    Selected
-                                  </Chip>
-                                ) : (
+                      {timeSlots.map((slot: { id: string; start: string; end: string; available: boolean }) => (
+                        <Card
+                          key={slot.start}
+                          isPressable={slot.available}
+                          onPress={() => slot.available && setSelectedTimeSlot(slot)}
+                          className={`cursor-pointer transition-all duration-200 h-fit shrink-0 mx-8 my-2 ${
+                            !slot.available
+                              ? 'opacity-50 cursor-not-allowed'
+                              : selectedTimeSlot?.start === slot.start
+                                ? 'ring-2 ring-red-500 bg-red-50'
+                                : 'hover:shadow-md hover:scale-102'
+                          }`}
+                        >
+                          <CardBody className="p-4">
+                            <div className="flex items-center justify-between">
+                              <span className="text-gray-700 font-medium">
+                                {formatTime(slot.start)} - {formatTime(slot.end)}
+                              </span>
+                              {!slot.available ? (
+                                <Badge placement="top-left" content="Booked" color="danger" size="sm">
                                   <ClockIcon className="w-5 h-5 text-gray-400" />
-                                )}
-                              </div>
-                            </CardBody>
-                          </Card>
-                        ),
-                      )}
+                                </Badge>
+                              ) : selectedTimeSlot?.id === slot.id ? (
+                                <Chip color="danger" size="sm">
+                                  Selected
+                                </Chip>
+                              ) : (
+                                <ClockIcon className="w-5 h-5 text-gray-400" />
+                              )}
+                            </div>
+                          </CardBody>
+                        </Card>
+                      ))}
                     </div>
                   </div>
                 </div>
@@ -444,72 +379,50 @@ export default function EditReservationPage() {
               <div className="space-y-6">
                 {/* Current vs New Reservation Comparison */}
                 <div className="bg-gray-50 rounded-sm p-6">
-                  <h3 className="text-lg font-semibold text-gray-700 mb-4">
-                    Reservation Changes
-                  </h3>
+                  <h3 className="text-lg font-semibold text-gray-700 mb-4">Reservation Changes</h3>
 
                   {/* Current Reservation */}
                   <div className="mb-4 p-4 bg-blue-50 rounded-sm">
-                    <h4 className="font-medium text-blue-800 mb-2">
-                      Current Reservation
-                    </h4>
+                    <h4 className="font-medium text-blue-800 mb-2">Current Reservation</h4>
                     <div className="space-y-2 text-sm">
                       <div className="flex justify-between">
                         <span className="text-gray-600">Room:</span>
-                        <span className="font-medium">
-                          {currentReservation.roomName}
-                        </span>
+                        <span className="font-medium">{currentReservation.roomName}</span>
                       </div>
                       <div className="flex justify-between">
                         <span className="text-gray-600">Date:</span>
-                        <span className="font-medium">
-                          {formatDate(new Date(currentReservation.date))}
-                        </span>
+                        <span className="font-medium">{formatDate(new Date(currentReservation.date))}</span>
                       </div>
                       <div className="flex justify-between">
                         <span className="text-gray-600">Time:</span>
-                        <span className="font-medium">
-                          {formatTime(currentReservation.date)}
-                        </span>
+                        <span className="font-medium">{formatTime(currentReservation.date)}</span>
                       </div>
                       <div className="flex justify-between">
                         <span className="text-gray-600">Purpose:</span>
-                        <span className="font-medium">
-                          {currentReservation.purpose}
-                        </span>
+                        <span className="font-medium">{currentReservation.purpose}</span>
                       </div>
                     </div>
                   </div>
 
                   {/* New Reservation */}
                   <div className="p-4 bg-green-50 rounded-sm">
-                    <h4 className="font-medium text-green-800 mb-2">
-                      Updated Reservation
-                    </h4>
+                    <h4 className="font-medium text-green-800 mb-2">Updated Reservation</h4>
                     <div className="space-y-2 text-sm">
                       <div className="flex justify-between">
                         <span className="text-gray-600">Room:</span>
-                        <span className="font-medium">
-                          {selectedRoom?.name}
-                        </span>
+                        <span className="font-medium">{selectedRoom?.name}</span>
                       </div>
                       <div className="flex justify-between">
                         <span className="text-gray-600">Date:</span>
                         <span className="font-medium">
-                          {selectedDate
-                            ? formatDate(
-                                selectedDate.toDate(getLocalTimeZone()),
-                              )
-                            : 'N/A'}
+                          {selectedDate ? formatDate(selectedDate.toDate(getLocalTimeZone())) : 'N/A'}
                         </span>
                       </div>
                       <div className="flex justify-between">
                         <span className="text-gray-600">Time:</span>
                         <span className="font-medium">
                           {selectedTimeSlot
-                            ? `${formatTime(
-                                selectedTimeSlot.start,
-                              )} - ${formatTime(selectedTimeSlot.end)}`
+                            ? `${formatTime(selectedTimeSlot.start)} - ${formatTime(selectedTimeSlot.end)}`
                             : 'N/A'}
                         </span>
                       </div>
@@ -525,9 +438,7 @@ export default function EditReservationPage() {
 
                 {/* Additional Information */}
                 <div>
-                  <h3 className="text-lg font-semibold text-gray-700 mb-4">
-                    Additional Information
-                  </h3>
+                  <h3 className="text-lg font-semibold text-gray-700 mb-4">Additional Information</h3>
                   <Textarea
                     label="Purpose of Meeting"
                     placeholder="Please describe the purpose of your meeting or event..."
@@ -539,8 +450,7 @@ export default function EditReservationPage() {
                     maxRows={6}
                     classNames={{
                       input: 'text-gray-700',
-                      inputWrapper:
-                        'border-gray-300 hover:border-red-400 focus-within:border-red-500',
+                      inputWrapper: 'border-gray-300 hover:border-red-400 focus-within:border-red-500',
                     }}
                   />
                 </div>
@@ -549,22 +459,12 @@ export default function EditReservationPage() {
 
             {/* Navigation Buttons */}
             <div className="flex justify-between pt-6">
-              <Button
-                onPress={handlePrevious}
-                isDisabled={currentStep === 0}
-                variant="ghost"
-                className="text-gray-600"
-              >
+              <Button onPress={handlePrevious} isDisabled={currentStep === 0} variant="ghost" className="text-gray-600">
                 Previous
               </Button>
 
               {currentStep < 2 ? (
-                <Button
-                  onPress={handleNext}
-                  isDisabled={!canProceed()}
-                  color="danger"
-                  className="px-8"
-                >
+                <Button onPress={handleNext} isDisabled={!canProceed()} color="danger" className="px-8">
                   Next
                 </Button>
               ) : (
@@ -575,9 +475,7 @@ export default function EditReservationPage() {
                   className="px-8"
                   isLoading={isSubmitting}
                 >
-                  {isSubmitting
-                    ? 'Updating Reservation...'
-                    : 'Update Reservation'}
+                  {isSubmitting ? 'Updating Reservation...' : 'Update Reservation'}
                 </Button>
               )}
             </div>

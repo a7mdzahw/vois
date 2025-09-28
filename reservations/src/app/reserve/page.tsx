@@ -3,23 +3,9 @@
 import { useForm } from '@tanstack/react-form';
 import { useState } from 'react';
 
-import {
-  CreateReservationDto,
-  ReservationStatus,
-} from '@contexts/reservation.context';
-import {
-  BuildingOfficeIcon,
-  CheckCircleIcon,
-  ClockIcon,
-} from '@heroicons/react/24/outline';
-import {
-  addToast,
-  Button,
-  Card,
-  CardBody,
-  CardHeader,
-  Progress,
-} from '@heroui/react';
+import { CreateReservationDto, ReservationStatus } from '@contexts/reservation.context';
+import { BuildingOfficeIcon, CheckCircleIcon, ClockIcon } from '@heroicons/react/24/outline';
+import { addToast, Button, Card, CardBody, CardHeader, Progress } from '@heroui/react';
 import { useCreateReservation } from '@hooks/useReservations';
 
 import { createReservationValidator } from '@validators/reservation.validator';
@@ -66,16 +52,11 @@ export default function ReservePage() {
     console.log({ values });
     switch (currentStep) {
       case 0:
-        return createReservationValidator
-          .pick({ roomId: true })
-          .safeParse(values).success;
+        return createReservationValidator.pick({ roomId: true }).safeParse(values).success;
       case 1:
-        return createReservationValidator.pick({ date: true }).safeParse(values)
-          .success;
+        return createReservationValidator.pick({ date: true }).safeParse(values).success;
       case 2:
-        return createReservationValidator
-          .pick({ purpose: true })
-          .safeParse(values).success;
+        return createReservationValidator.pick({ purpose: true }).safeParse(values).success;
       default:
         return false;
     }
@@ -124,45 +105,25 @@ export default function ReservePage() {
       <div className="max-w-4xl mx-auto">
         {/* Header */}
         <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold text-gray-800 mb-4">
-            Reserve a Room
-          </h1>
-          <p className="text-lg text-gray-600">
-            Book your perfect meeting space in just a few steps
-          </p>
+          <h1 className="text-4xl font-bold text-gray-800 mb-4">Reserve a Room</h1>
+          <p className="text-lg text-gray-600">Book your perfect meeting space in just a few steps</p>
         </div>
 
         {/* Progress Indicator */}
         <Card className="mb-8">
           <CardBody className="p-6">
             <div className="w-full">
-              <Progress
-                value={(currentStep + 1) * 33.3}
-                color="danger"
-                className="mb-4"
-              />
+              <Progress value={(currentStep + 1) * 33.3} color="danger" className="mb-4" />
               <div className="flex justify-between">
-                <div
-                  className={`flex flex-col items-center ${
-                    currentStep >= 0 ? 'text-red-600' : 'text-gray-400'
-                  }`}
-                >
+                <div className={`flex flex-col items-center ${currentStep >= 0 ? 'text-red-600' : 'text-gray-400'}`}>
                   <BuildingOfficeIcon className="w-6 h-6 mb-2" />
                   <span className="text-sm font-medium">Room</span>
                 </div>
-                <div
-                  className={`flex flex-col items-center ${
-                    currentStep >= 1 ? 'text-red-600' : 'text-gray-400'
-                  }`}
-                >
+                <div className={`flex flex-col items-center ${currentStep >= 1 ? 'text-red-600' : 'text-gray-400'}`}>
                   <ClockIcon className="w-6 h-6 mb-2" />
                   <span className="text-sm font-medium">Time</span>
                 </div>
-                <div
-                  className={`flex flex-col items-center ${
-                    currentStep >= 2 ? 'text-red-600' : 'text-gray-400'
-                  }`}
-                >
+                <div className={`flex flex-col items-center ${currentStep >= 2 ? 'text-red-600' : 'text-gray-400'}`}>
                   <CheckCircleIcon className="w-6 h-6 mb-2" />
                   <span className="text-sm font-medium">Confirm</span>
                 </div>
@@ -191,39 +152,25 @@ export default function ReservePage() {
 
             {/* Navigation Buttons */}
             <div className="flex justify-between pt-6">
-              <Button
-                onPress={handlePrevious}
-                isDisabled={currentStep === 0}
-                variant="ghost"
-                className="text-gray-600"
-              >
+              <Button onPress={handlePrevious} isDisabled={currentStep === 0} variant="ghost" className="text-gray-600">
                 Previous
               </Button>
 
               <reservationForm.Subscribe>
                 {({ values }) =>
                   currentStep < 2 ? (
-                    <Button
-                      isDisabled={!canProceed(values)}
-                      onPress={handleNext}
-                      color="danger"
-                      className="px-8"
-                    >
+                    <Button isDisabled={!canProceed(values)} onPress={handleNext} color="danger" className="px-8">
                       Next
                     </Button>
                   ) : (
                     <Button
                       onPress={reservationForm.handleSubmit}
-                      isDisabled={
-                        !canProceed(values) || createReservation.isPending
-                      }
+                      isDisabled={!canProceed(values) || createReservation.isPending}
                       color="danger"
                       className="px-8"
                       isLoading={createReservation.isPending}
                     >
-                      {createReservation.isPending
-                        ? 'Creating Reservation...'
-                        : 'Confirm Reservation'}
+                      {createReservation.isPending ? 'Creating Reservation...' : 'Confirm Reservation'}
                     </Button>
                   )
                 }

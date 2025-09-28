@@ -11,17 +11,7 @@ import {
   PencilIcon,
   TrashIcon,
 } from '@heroicons/react/24/outline';
-import {
-  addToast,
-  Badge,
-  Button,
-  Card,
-  CardBody,
-  CardHeader,
-  Chip,
-  Divider,
-  Spinner,
-} from '@heroui/react';
+import { addToast, Badge, Button, Card, CardBody, CardHeader, Chip, Divider, Spinner } from '@heroui/react';
 import { formatDate, formatDateTime, formatTime } from '@utils/date';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -49,8 +39,7 @@ export default function ViewReservationPage() {
   const deleteReservation = useDeleteReservation();
 
   // Find the current reservation
-  const { data: currentReservation, isLoading: isLoadingReservation } =
-    useReservation(reservationId);
+  const { data: currentReservation, isLoading: isLoadingReservation } = useReservation(reservationId);
 
   const handleDelete = async () => {
     if (!currentReservation) return;
@@ -100,18 +89,11 @@ export default function ViewReservationPage() {
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
           <ExclamationTriangleIcon className="w-16 h-16 text-red-500 mx-auto mb-4" />
-          <h1 className="text-2xl font-bold text-gray-800 mb-4">
-            Reservation Not Found
-          </h1>
+          <h1 className="text-2xl font-bold text-gray-800 mb-4">Reservation Not Found</h1>
           <p className="text-gray-600 mb-6">
-            The reservation you&apos;re looking for doesn&apos;t exist or has
-            been deleted.
+            The reservation you&apos;re looking for doesn&apos;t exist or has been deleted.
           </p>
-          <Button
-            color="danger"
-            onPress={() => router.push('/')}
-            startContent={<ArrowLeftIcon className="w-4 h-4" />}
-          >
+          <Button color="danger" onPress={() => router.push('/')} startContent={<ArrowLeftIcon className="w-4 h-4" />}>
             Go Back Home
           </Button>
         </div>
@@ -121,10 +103,8 @@ export default function ViewReservationPage() {
 
   const reservationDate = new Date(currentReservation.date);
   const isPastReservation = reservationDate < new Date();
-  const canEdit =
-    !isPastReservation && currentReservation.status !== 'cancelled';
-  const canCancel =
-    !isPastReservation && currentReservation.status !== 'cancelled';
+  const canEdit = !isPastReservation && currentReservation.status !== 'cancelled';
+  const canCancel = !isPastReservation && currentReservation.status !== 'cancelled';
 
   return (
     <div className="min-h-screen bg-gray-50 py-8 px-4">
@@ -143,12 +123,8 @@ export default function ViewReservationPage() {
 
           <div className="flex items-center justify-between">
             <div>
-              <h1 className="text-4xl font-bold text-gray-800 mb-2">
-                Reservation Details
-              </h1>
-              <p className="text-lg text-gray-600">
-                View and manage your room reservation
-              </p>
+              <h1 className="text-4xl font-bold text-gray-800 mb-2">Reservation Details</h1>
+              <p className="text-lg text-gray-600">View and manage your room reservation</p>
             </div>
 
             <div className="flex items-center gap-2">
@@ -158,8 +134,7 @@ export default function ViewReservationPage() {
                 color={statusColorMap[currentReservation.status]}
                 startContent={statusIconMap[currentReservation.status]}
               >
-                {currentReservation.status.charAt(0).toUpperCase() +
-                  currentReservation.status.slice(1)}
+                {currentReservation.status.charAt(0).toUpperCase() + currentReservation.status.slice(1)}
               </Chip>
             </div>
           </div>
@@ -195,10 +170,7 @@ export default function ViewReservationPage() {
                       {currentReservation.roomName || 'Unknown Room'}
                     </h3>
                     <p className="text-gray-600">
-                      Reservation ID:{' '}
-                      <span className="font-mono text-sm">
-                        {currentReservation.id}
-                      </span>
+                      Reservation ID: <span className="font-mono text-sm">{currentReservation.id}</span>
                     </p>
                   </div>
                 </div>
@@ -220,18 +192,14 @@ export default function ViewReservationPage() {
                       <CalendarIcon className="w-5 h-5" />
                       <span className="font-medium">Date</span>
                     </div>
-                    <p className="text-xl font-semibold text-gray-800">
-                      {formatDate(reservationDate)}
-                    </p>
+                    <p className="text-xl font-semibold text-gray-800">{formatDate(reservationDate)}</p>
                   </div>
                   <div className="space-y-2">
                     <div className="flex items-center gap-2 text-gray-600">
                       <ClockIcon className="w-5 h-5" />
                       <span className="font-medium">Time</span>
                     </div>
-                    <p className="text-xl font-semibold text-gray-800">
-                      {formatTime(reservationDate.toISOString())}
-                    </p>
+                    <p className="text-xl font-semibold text-gray-800">{formatTime(reservationDate.toISOString())}</p>
                   </div>
                 </div>
 
@@ -242,8 +210,7 @@ export default function ViewReservationPage() {
                       <span className="font-medium">Past Reservation</span>
                     </div>
                     <p className="text-yellow-700 text-sm mt-1">
-                      This reservation has already passed and cannot be
-                      modified.
+                      This reservation has already passed and cannot be modified.
                     </p>
                   </div>
                 )}
@@ -261,38 +228,27 @@ export default function ViewReservationPage() {
               <CardBody className="p-6">
                 <div className="space-y-4">
                   <div>
-                    <h3 className="font-medium text-gray-700 mb-2">
-                      Meeting Purpose
-                    </h3>
-                    <p className="text-gray-800 bg-gray-50 p-4 rounded-lg">
-                      {currentReservation.purpose}
-                    </p>
+                    <h3 className="font-medium text-gray-700 mb-2">Meeting Purpose</h3>
+                    <p className="text-gray-800 bg-gray-50 p-4 rounded-lg">{currentReservation.purpose}</p>
                   </div>
 
                   <Divider />
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
-                      <h3 className="font-medium text-gray-700 mb-2">
-                        Reservation Status
-                      </h3>
+                      <h3 className="font-medium text-gray-700 mb-2">Reservation Status</h3>
                       <Chip
                         variant="flat"
                         color={statusColorMap[currentReservation.status]}
                         startContent={statusIconMap[currentReservation.status]}
                         size="lg"
                       >
-                        {currentReservation.status.charAt(0).toUpperCase() +
-                          currentReservation.status.slice(1)}
+                        {currentReservation.status.charAt(0).toUpperCase() + currentReservation.status.slice(1)}
                       </Chip>
                     </div>
                     <div>
-                      <h3 className="font-medium text-gray-700 mb-2">
-                        Created
-                      </h3>
-                      <p className="text-gray-800">
-                        {formatDateTime(reservationDate)}
-                      </p>
+                      <h3 className="font-medium text-gray-700 mb-2">Created</h3>
+                      <p className="text-gray-800">{formatDateTime(reservationDate)}</p>
                     </div>
                   </div>
                 </div>
@@ -326,9 +282,7 @@ export default function ViewReservationPage() {
                       color="warning"
                       variant="flat"
                       className="w-full"
-                      startContent={
-                        <ExclamationTriangleIcon className="w-4 h-4" />
-                      }
+                      startContent={<ExclamationTriangleIcon className="w-4 h-4" />}
                     >
                       Cancel Reservation
                     </Button>
@@ -343,9 +297,7 @@ export default function ViewReservationPage() {
                     isLoading={deleteReservation.isPending}
                     isDisabled={deleteReservation.isPending}
                   >
-                    {deleteReservation.isPending
-                      ? 'Deleting...'
-                      : 'Delete Reservation'}
+                    {deleteReservation.isPending ? 'Deleting...' : 'Delete Reservation'}
                   </Button>
 
                   <Button
@@ -370,30 +322,21 @@ export default function ViewReservationPage() {
                 <div className="space-y-3 text-sm">
                   <div className="flex justify-between">
                     <span className="text-gray-600">Status:</span>
-                    <Badge
-                      color={statusColorMap[currentReservation.status]}
-                      variant="flat"
-                    >
+                    <Badge color={statusColorMap[currentReservation.status]} variant="flat">
                       {currentReservation.status}
                     </Badge>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-gray-600">Room:</span>
-                    <span className="font-medium">
-                      {currentReservation.roomName}
-                    </span>
+                    <span className="font-medium">{currentReservation.roomName}</span>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-gray-600">Date:</span>
-                    <span className="font-medium">
-                      {formatDate(reservationDate)}
-                    </span>
+                    <span className="font-medium">{formatDate(reservationDate)}</span>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-gray-600">Time:</span>
-                    <span className="font-medium">
-                      {formatTime(reservationDate.toISOString())}
-                    </span>
+                    <span className="font-medium">{formatTime(reservationDate.toISOString())}</span>
                   </div>
                 </div>
               </CardBody>

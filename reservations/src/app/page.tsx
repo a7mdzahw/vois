@@ -18,11 +18,7 @@ import {
 import { useReservations } from '../hooks/useReservations';
 import Image from 'next/image';
 import Link from 'next/link';
-import {
-  PlusIcon,
-  MagnifyingGlassIcon,
-  PencilIcon,
-} from '@heroicons/react/24/outline';
+import { PlusIcon, MagnifyingGlassIcon, PencilIcon } from '@heroicons/react/24/outline';
 import { formatDateTime } from '@utils/date';
 import { useRouter } from 'next/navigation';
 import CancelReservation from '@components/CancelReservation';
@@ -64,9 +60,7 @@ export default function ReservationsPage() {
         <div className="max-w-7xl mx-auto">
           <Card className="shadow-lg">
             <CardBody className="text-center py-8">
-              <p className="text-red-600 text-lg">
-                Error loading reservations: {error.message}
-              </p>
+              <p className="text-red-600 text-lg">Error loading reservations: {error.message}</p>
             </CardBody>
           </Card>
         </div>
@@ -78,12 +72,8 @@ export default function ReservationsPage() {
     <div className="py-8 px-4">
       <div className="max-w-7xl mx-auto">
         <div className="mb-8">
-          <h1 className="text-4xl font-bold text-gray-800 mb-4">
-            Reservations
-          </h1>
-          <p className="text-lg text-gray-600">
-            Manage and view all room reservations
-          </p>
+          <h1 className="text-4xl font-bold text-gray-800 mb-4">Reservations</h1>
+          <p className="text-lg text-gray-600">Manage and view all room reservations</p>
         </div>
 
         <div className="mb-6 flex flex-col sm:flex-row gap-4 justify-between">
@@ -118,9 +108,7 @@ export default function ReservationsPage() {
                 <TableColumn>#</TableColumn>
                 <TableColumn>ROOM</TableColumn>
                 <TableColumn>DATE / TIME</TableColumn>
-                <TableColumn className="hidden md:table-cell">
-                  STATUS
-                </TableColumn>
+                <TableColumn className="hidden md:table-cell">STATUS</TableColumn>
                 <TableColumn>ACTIONS</TableColumn>
               </TableHeader>
               <TableBody>
@@ -133,9 +121,7 @@ export default function ReservationsPage() {
                         router.push(`/reservations/${reservation.id}`);
                       }}
                     >
-                      <TableCell className="font-mono text-sm text-center">
-                        {index + 1}
-                      </TableCell>
+                      <TableCell className="font-mono text-sm text-center">{index + 1}</TableCell>
                       <TableCell className="font-semibold">
                         <div className="flex items-center gap-2">
                           {reservation.roomIcon && (
@@ -149,17 +135,10 @@ export default function ReservationsPage() {
                           {reservation.roomName || 'Unknown Room'}
                         </div>
                       </TableCell>
-                      <TableCell className="font-semibold">
-                        {formatDateTime(reservation.date)}
-                      </TableCell>
+                      <TableCell className="font-semibold">{formatDateTime(reservation.date)}</TableCell>
                       <TableCell className="hidden md:table-cell">
-                        <Chip
-                          variant="flat"
-                          size="sm"
-                          color={statusColorMap[reservation.status]}
-                        >
-                          {reservation.status.charAt(0).toUpperCase() +
-                            reservation.status.slice(1)}
+                        <Chip variant="flat" size="sm" color={statusColorMap[reservation.status]}>
+                          {reservation.status.charAt(0).toUpperCase() + reservation.status.slice(1)}
                         </Chip>
                       </TableCell>
                       <TableCell>
@@ -192,9 +171,7 @@ export default function ReservationsPage() {
         </Card>
 
         <div className="mt-8 text-center">
-          <p className="text-gray-500">
-            Showing {reservations?.length || 0} reservations
-          </p>
+          <p className="text-gray-500">Showing {reservations?.length || 0} reservations</p>
         </div>
       </div>
     </div>

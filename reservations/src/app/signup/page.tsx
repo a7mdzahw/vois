@@ -32,25 +32,19 @@ export default function SignUpPage() {
           </div>
         </div>
 
-        <h2 className="text-center text-2xl font-bold text-gray-900 mb-2">
-          Create your account
-        </h2>
-        <p className="text-center text-sm text-gray-600 mb-8">
-          Sign up to start making room reservations
-        </p>
+        <h2 className="text-center text-2xl font-bold text-gray-900 mb-2">Create your account</h2>
+        <p className="text-center text-sm text-gray-600 mb-8">Sign up to start making room reservations</p>
 
         <SignUp
           appearance={{
             elements: {
-              formButtonPrimary:
-                'bg-red-600 hover:bg-red-700 text-sm normal-case',
+              formButtonPrimary: 'bg-red-600 hover:bg-red-700 text-sm normal-case',
               card: 'shadow-none',
               headerTitle: 'hidden',
               headerSubtitle: 'hidden',
               socialButtonsBlockButton: 'border-gray-300 hover:bg-gray-50',
               socialButtonsBlockButtonText: 'font-normal',
-              formFieldInput:
-                'border-gray-300 focus:border-red-500 focus:ring-red-500',
+              formFieldInput: 'border-gray-300 focus:border-red-500 focus:ring-red-500',
               footerActionLink: 'text-red-600 hover:text-red-700',
             },
           }}

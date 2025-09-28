@@ -1,10 +1,7 @@
 import { z } from 'zod';
 
 import { ISOString } from './shared.context';
-import {
-  createReservationValidator,
-  availableSlotsValidator,
-} from '@validators/reservation.validator';
+import { createReservationValidator, availableSlotsValidator } from '@validators/reservation.validator';
 
 export enum ReservationStatus {
   CONFIRMED = 'confirmed',

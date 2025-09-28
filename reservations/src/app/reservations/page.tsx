@@ -48,8 +48,7 @@ export default function Calendar() {
         {event.event.title}
         <hr className="my-2 border-gray-400" />
         <section hidden={isWeekView}>
-          <p>Start: {formatTime(event.event.start || '')}</p>{' '}
-          <p>End: {formatTime(event.event.end || '')} </p>
+          <p>Start: {formatTime(event.event.start || '')}</p> <p>End: {formatTime(event.event.end || '')} </p>
         </section>
       </div>
     );
@@ -59,9 +58,7 @@ export default function Calendar() {
     <div className="py-8 px-4 max-w-7xl mx-auto h-[80vh]">
       <div className="mb-8">
         <h1 className="text-4xl font-bold text-gray-800 mb-4">Reservations</h1>
-        <p className="text-lg text-gray-600">
-          Manage and view all room reservations
-        </p>
+        <p className="text-lg text-gray-600">Manage and view all room reservations</p>
       </div>
       <FullCalendar
         dayHeaderClassNames="bg-primary-600 text-white h-10"

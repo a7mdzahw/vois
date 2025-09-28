@@ -6,14 +6,9 @@ import { Reservation } from '@contexts/reservation.context';
 import { useConfirm } from './ConfirmDialog';
 import { TrashIcon } from '@heroicons/react/24/outline';
 
-export default function CancelReservation({
-  reservation,
-}: {
-  reservation: Reservation;
-}) {
+export default function CancelReservation({ reservation }: { reservation: Reservation }) {
   const confirm = useConfirm();
-  const { mutateAsync: cancelReservation, isPending: isCancelling } =
-    useCancelReservation();
+  const { mutateAsync: cancelReservation, isPending: isCancelling } = useCancelReservation();
 
   return (
     <Button
