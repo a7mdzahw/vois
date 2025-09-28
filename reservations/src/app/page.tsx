@@ -37,7 +37,6 @@ export default function ReservationsPage() {
   const reservations = data?.filter((reservation) => {
     return (
       reservation.roomName?.toLowerCase().includes(search.toLowerCase()) ||
-      reservation.userName?.toLowerCase().includes(search.toLowerCase()) ||
       reservation.purpose?.toLowerCase().includes(search.toLowerCase())
     );
   });

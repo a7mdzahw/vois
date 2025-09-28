@@ -3,10 +3,10 @@
 import { useForm } from '@tanstack/react-form';
 import { useState } from 'react';
 
-import { CreateReservationDto, ReservationStatus } from '@contexts/reservation.context';
-import { BuildingOfficeIcon, CheckCircleIcon, ClockIcon } from '@heroicons/react/24/outline';
+import { CreateReservationDto, Reservation, ReservationStatus } from '@contexts/reservation.context';
+import { BuildingOfficeIcon, CheckCircleIcon, ClockIcon, PencilIcon } from '@heroicons/react/24/outline';
 import { addToast, Button, Card, CardBody, CardHeader, Progress } from '@heroui/react';
-import { useCreateReservation } from '@hooks/useReservations';
+import { useCreateReservation, useUpdateReservation } from '@hooks/useReservations';
 
 import { createReservationValidator } from '@validators/reservation.validator';
 import { useRouter } from 'next/navigation';
@@ -14,15 +14,21 @@ import ConfirmationStep from './components/ConfirmationStep';
 import RoomSelection from './components/RoomSelection';
 import TimeSelection from './components/TimeSelection';
 
-export default function ReservePage() {
+export default function ReservePage({ reservation }: { reservation?: Reservation }) {
   const router = useRouter();
 
   // Mutations
   const createReservation = useCreateReservation();
+  const updateReservation = useUpdateReservation();
 
   // Form
   const handleSubmit = async (data: CreateReservationDto) => {
-    await createReservation.mutateAsync(data);
+    if (reservation) {
+      await updateReservation.mutateAsync({ reservationId: reservation.id, data });
+    } else {
+      await createReservation.mutateAsync(data);
+    }
+
     router.push('/');
     addToast({
       title: 'Reservation created successfully!',
@@ -33,11 +39,11 @@ export default function ReservePage() {
 
   const reservationForm = useForm({
     defaultValues: {
-      roomId: '',
-      date: '',
-      day: new Date().toISOString(),
-      status: ReservationStatus.PENDING,
-      purpose: '',
+      roomId: reservation?.roomId || '',
+      date: reservation?.date || '',
+      day: reservation?.date || new Date().toISOString(),
+      status: reservation?.status || ReservationStatus.PENDING,
+      purpose: reservation?.purpose || '',
     },
     validators: {
       onChange: createReservationValidator,
@@ -49,7 +55,6 @@ export default function ReservePage() {
   const [currentStep, setCurrentStep] = useState(0);
 
   const canProceed = (values: CreateReservationDto) => {
-    console.log({ values });
     switch (currentStep) {
       case 0:
         return createReservationValidator.pick({ roomId: true }).safeParse(values).success;
@@ -105,8 +110,12 @@ export default function ReservePage() {
       <div className="max-w-4xl mx-auto">
         {/* Header */}
         <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold text-gray-800 mb-4">Reserve a Room</h1>
-          <p className="text-lg text-gray-600">Book your perfect meeting space in just a few steps</p>
+          <h1 className="text-4xl font-bold text-gray-800 mb-4 flex items-center justify-center gap-2">
+            {reservation ? 'Edit Reservation' : 'Reserve a Room'}
+          </h1>
+          <p className="text-lg text-gray-600">
+            {reservation ? 'Edit your reservation details' : 'Book your perfect meeting space in just a few steps'}
+          </p>
         </div>
 
         {/* Progress Indicator */}
